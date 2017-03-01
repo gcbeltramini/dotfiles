@@ -21,7 +21,16 @@ alias master="git pull origin master"
 alias up="cd .."
 alias desktop="cd ~/Desktop/"
 alias downloads="cd ~/Downloads/"
-alias ll="ls -la"
+alias ll="ls -lahF --time-style='+%Y-%m-%d %H:%M:%S %z'"
+alias llpart="(printf \"SIZE DATE HH:MM:SS TZ NAME\n\" ; \
+               ls -lahF --time-style='+%Y-%m-%d %H:%M:%S %z' \
+               | awk '{print \$5, \$6, \$7, \$8, \$9}') | column -t"
+alias llfull="(printf \"PERM LINKS OWNER GROUP SIZE DATE HH:MM:SS TZ NAME\n\" ; \
+               ls -lahF --time-style='+%Y-%m-%d %H:%M:%S %z' \
+               | sed 1d) | column -t"
+alias statpart="(printf \"DATE HH:MM:SS SIZE NAME\n\"; stat -c '%.19y %s %n' *) | column -t"
+alias lfiles="ls -l | egrep -v '^d'"
+alias ldir="ls -l | egrep '^d'"
 alias nb="jupyter notebook"
 alias myip="ipconfig getifaddr en0"
 
