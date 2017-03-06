@@ -5,7 +5,7 @@ execute pathogen#infect()
 " https://dougblack.io/words/a-good-vimrc.html
 
 " Colors
-colorscheme molokai
+colorscheme molokai        " https://github.com/tomasr/molokai
 let g:molokai_original = 1
 syntax enable              " enable syntax processing
 
@@ -24,6 +24,8 @@ au BufNewFile,BufRead *.js, *.html, *.css
     \ set shiftwidth=2
 
 " Flagging unnecessary whitespace
+" (https://github.com/RadoRado/dotfiles/blob/35f34cd0ebaab8815dd1f9d30b0df4e138265e75/vimrc#L151)
+highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " UI Config
@@ -75,3 +77,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+
+set backspace=indent,eol,start
+
