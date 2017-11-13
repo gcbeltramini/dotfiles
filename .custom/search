@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# To use this:
+# $ pip install docopts
+
+#? search 0.1.0
+
+##? Search for things.
+##?
+##? On linux, use the $BROWSER env var, so it must be set.
+##?
+##? Usage:
+##?   search web (--google|--wikipedia|--stackoverflow) <web_text>
+##?   search local (--file|--directory|--content) <path> <local_text>
+##?   search -h | --help
+##?   search -v | --version
+##?
+##? Options:
+##?   -h --help     Show help options.
+##?   -v --version  Print program version.
+##?
+##? Examples:
+##?   search web --google something
+##?   search web --wikipedia something
+##?   search web --stackoverflow something
+##?   search local --file . my-file.ext
+##?   search local --directory . my-folder
+##?   search local --content /path/to/file something
+
+set -euo pipefail
+
+function is_osx {
+  [[ `uname -s` == "Darwin" ]]
+}
+
+help=$(grep "^##?" "$0" | cut -c 5-)
+version=$(grep "^#?" "$0" | cut -c 4-)
+eval "$(docopts -h "$help" -V "$version" : "$@")"
+
+if is_osx; then
+  open_cmd=open;
+else
+  open_cmd=$BROWSER;
+fi
+
+if ${web}; then
+  if ${google}; then
+    $open_cmd "https://www.google.com.br/search?q=${web_text}";
+  elif ${wikipedia}; then
+    $open_cmd "https://en.wikipedia.org/w/index.php?search=${web_text}&title=Special%3ASearch&go=Go";
+  elif ${stackoverflow}; then
+    $open_cmd "https://stackoverflow.com/search?q=${web_text}";
+  fi
+elif ${local}; then
+  if ${file}; then
+    find ${path} -type f -name ${local_text};
+  elif ${directory}; then
+    find ${path} -type d -name ${local_text};
+  elif ${content}; then
+    grep --color=always -rnH ${path} -e ${local_text};
+  fi
+fi
+
+
+# using `getopts`
+# ---------------
+# 
+# while getopts ":f:d:g:w:W:" opt; do
+#   case $opt in
+#     g)
+#       open https://www.google.com.br/search?q=${OPTARG}
+#       ;;
+#     W)
+#       open https://en.wikipedia.org/w/index.php?search=${OPTARG} #&title=Special:Search&go=Go&fulltext=1
+#       ;;
+#     \?)
+#       echo "Invalid option: -$OPTARG" >&2
+#       exit 1
+#       ;;
+#     :)
+#       echo "Option -$OPTARG requires an argument." >&2
+#       exit 1
+#       ;;
+#   esac
+# done

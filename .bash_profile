@@ -1,3 +1,22 @@
+# Initialize
+# ==========
+
+export CUSTOM_PATH="${HOME}/.custom"
+
+source_if_exists() {
+  # Run `source` if file exists
+  # 
+  # Usage:
+  #   source_if_exists i_exist
+  #   source_if_exists i_dont_exist
+
+  if [ -f "$1" ]; then
+    source "$1"
+    return 0
+  fi
+  return 1
+}
+
 
 # Aliases
 # =======
@@ -18,21 +37,32 @@ alias master="git pull origin master"
 
 # General
 # -------
-alias up="cd .."
-alias desktop="cd ~/Desktop/"
-alias downloads="cd ~/Downloads/"
-alias ll="ls -lahF --time-style='+%Y-%m-%d %H:%M:%S %z'"
-alias llpart="(printf \"SIZE DATE HH:MM:SS TZ NAME\n\" ; \
-               ls -lahF --time-style='+%Y-%m-%d %H:%M:%S %z' \
-               | awk '{print \$5, \$6, \$7, \$8, \$9}') | column -t"
-alias llfull="(printf \"PERM LINKS OWNER GROUP SIZE DATE HH:MM:SS TZ NAME\n\" ; \
-               ls -lahF --time-style='+%Y-%m-%d %H:%M:%S %z' \
-               | sed 1d) | column -t"
-alias statpart="(printf \"DATE HH:MM:SS SIZE NAME\n\"; stat -c '%.19y %s %n' *) | column -t"
-alias lfiles="ls -l | egrep -v '^d'"
-alias ldir="ls -l | egrep '^d'"
+alias desktop="cd ${HOME}/Desktop/"
+alias downloads="cd ${HOME}/Downloads/"
+alias ll="gls -lAhF --color=always --time-style='+%Y-%m-%d %H:%M:%S %z' \
+  | sed 1d"
+# install `gls` with:
+# $ brew install coreutils
+alias lsfiles="ls -l | grep -v '^d' | sed 1d"  # "sed 1d" or "tail -n +2" to remove the first line
+alias lsdir="ls -l | grep '^d'"
 alias nb="jupyter notebook"
 alias myip="ipconfig getifaddr en0"
+export CLICOLOR=1  # ls -G
+
+
+# Utilities
+# =========
+
+UTILS_FILE="${CUSTOM_PATH}/utils"
+source_if_exists "${UTILS_FILE}"
+export PATH="${CUSTOM_PATH}:${PATH}"
+
+
+# TOKENS
+# ======
+
+TOKEN_FILE="${CUSTOM_PATH}/tokens"
+source_if_exists "${TOKEN_FILE}"
 
 
 # To handle non-ASCII characters
@@ -44,12 +74,12 @@ export LANG=en_US.UTF-8
 # Spark
 # =====
 # export PYSPARK_SUBMIT_ARGS="--master local[2]"
-alias pyspark-ipython="PYSPARK_DRIVER_PYTHON=ipython pyspark"
-alias pyspark-jupyter="PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\" pyspark"
-# $ pyspark
-# >>> import os; os.environ['SPARK_HOME']  # "/usr/local/Cellar/apache-spark/2.0.1/libexec"
-export SPARK_HOME="/usr/local/Cellar/apache-spark/2.1.0/libexec/"
-export PATH="$SPARK_HOME/bin:$PATH"
+# alias pyspark-ipython="PYSPARK_DRIVER_PYTHON=ipython pyspark"  # needs $SPARK_HOME
+# alias pyspark-jupyter="PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\" pyspark"  # needs $SPARK_HOME
+# After running `$ pyspark`, import os; os.environ['SPARK_HOME'] results in "/usr/local/Cellar/apache-spark/2.0.1/libexec"
+# because Spark was installed with `brew` so it's not necessary to:
+# export SPARK_HOME="/usr/local/Cellar/apache-spark/2.2.0/libexec/"
+# export PATH="$SPARK_HOME/bin:$PATH"
 
 
 # Git
@@ -58,16 +88,16 @@ export PATH="$SPARK_HOME/bin:$PATH"
 # git-prompt.sh: display current branch in bash (variable `__git_ps1`)
 # -------------
 # Following http://git-prompt.sh/, run in the terminal:
-# curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o ~/.git-prompt.sh
-source ~/.git-prompt.sh
+# curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o "${HOME}"/.git-prompt.sh
+source "${HOME}"/.git-prompt.sh
 
 # git-completion.sh: autocomplete git subcommands and other useful stuff
 # -----------------
 # Documentation: https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
 
 # Analogous to get-prompt.sh:
-# curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
-source ~/.git-completion.bash
+# curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o "${HOME}"/.git-completion.bash
+source "${HOME}"/.git-completion.bash
 
 
 export GIT_PS1_SHOWDIRTYSTATE="true" # add a * to the branch name if the branch has been changed
