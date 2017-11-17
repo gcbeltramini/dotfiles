@@ -117,7 +117,7 @@ export GIT_PS1_SHOWSTASHSTATE=true # '$' next to the branch name if something is
 export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there're untracked files
 export GIT_PS1_SHOWUPSTREAM="auto verbose" # difference between HEAD and its upstream: '<' (you are behind), '>' (you are ahead), '<>' (you have diverged), '=' (no difference)
 export GIT_PS1_DESCRIBE_STYLE="branch" # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
-export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
+# export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
 if [ -f "${GIT_PROMPT_FILE}" ]; then
   export PS1="${PS1}\[\033[0;31m\]\$(__git_ps1 \" (%s)\")\[\033[0m\]"
 fi
