@@ -89,7 +89,8 @@ export LANG=en_US.UTF-8
 # -------------
 # Following http://git-prompt.sh/, run in the terminal:
 # curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o "${HOME}"/.git-prompt.sh
-source "${HOME}"/.git-prompt.sh
+GIT_PROMPT_FILE="${HOME}/.git-prompt.sh"
+source_if_exists "${GIT_PROMPT_FILE}"
 
 # git-completion.sh: autocomplete git subcommands and other useful stuff
 # -----------------
@@ -97,11 +98,7 @@ source "${HOME}"/.git-prompt.sh
 
 # Analogous to get-prompt.sh:
 # curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o "${HOME}"/.git-completion.bash
-source "${HOME}"/.git-completion.bash
-
-
-export GIT_PS1_SHOWDIRTYSTATE="true" # add a * to the branch name if the branch has been changed
-export PS1="\[\033[0;34m\]\\u \[\033[01;32m\]\\w\[\033[0;31m\]\$(__git_ps1 \" (%s)\")"
+source_if_exists "${HOME}/.git-completion.bash"
 
 # Add git completion to aliases
 __git_complete ga _git_add
@@ -112,5 +109,17 @@ __git_complete gco _git_checkout
 # Custom prompt
 # =============
 
-# export PS1="\[\033[0;34m\]\\u \[\033[01;32m\]\\w\[\033[0;31m\]" # if you don't have git-prompt.sh
-export PS1="\n"$PS1"\[\033[00m\] \$ "
+export PS1="\n[\D{%T}] \[\033[0;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
+
+# Git
+export GIT_PS1_SHOWDIRTYSTATE=true # unstaged ('*') and staged ('+') changes next to the branch name
+export GIT_PS1_SHOWSTASHSTATE=true # '$' next to the branch name if something is stashed
+export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there're untracked files
+export GIT_PS1_SHOWUPSTREAM="auto verbose" # difference between HEAD and its upstream: '<' (you are behind), '>' (you are ahead), '<>' (you have diverged), '=' (no difference)
+export GIT_PS1_DESCRIBE_STYLE="branch" # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
+# export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
+if [ -f "${GIT_PROMPT_FILE}" ]; then
+  export PS1="${PS1}\[\033[0;31m\]\$(__git_ps1 \" (%s)\")\[\033[0m\]"
+fi
+
+export PS1="${PS1}\[\033[00m\] \$ "
