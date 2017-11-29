@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# condaenv-activate 0.1.0
+
+##? Activate conda environment. To exit, close the terminal.
+##?
+##? Usage:
+##?   source condaenv-activate <env_name>
+##?
+##? Examples:
+##?   source condaenv-activate my-conda-env
+
+get_help() {
+  grep "^##?" "$1" | cut -c 5-
+}
+
+if [ "${BASH_SOURCE[0]}" = "${0}" ]; then # $ condaenv-activate ...
+  echo "$(get_help $0)"
+  exit 1 # `return` is not allowed
+elif [ "$#" != 1 ]; then # $ source condaenv-activate a ...
+  echo "$(get_help ${BASH_SOURCE[0]})"
+  return 1 # `exit` will close the terminal window
+fi
+
+env_name="$1"
+
+source activate ${env_name} || return 1
+unset PYTHONPATH
+unset PYTHONHOME
+export PATH=$(conda info | awk '/default environment : / {print $4}')/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin
