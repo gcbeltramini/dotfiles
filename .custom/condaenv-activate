@@ -24,7 +24,10 @@ fi
 
 env_name="$1"
 
+python_current=$(which python | xargs dirname)
 source activate ${env_name} || return 1
+python_env=$(conda info | awk '/default environment : / {print $4}')
 unset PYTHONPATH
 unset PYTHONHOME
-export PATH=$(conda info | awk '/default environment : / {print $4}')/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin
+# export PATH=${python_evn}/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin # create a new $PATH
+export PATH=$(echo "$PATH" | gsed -r "s~:?${python_current}~~") # remove the current python from the $PATH
