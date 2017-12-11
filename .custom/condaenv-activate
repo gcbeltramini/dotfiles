@@ -2,13 +2,16 @@
 
 # condaenv-activate 0.1.0
 
-##? Activate conda environment. To exit, close the terminal.
+##? Activate conda environment. To exit: 
+##? - close the terminal; or
+##? - run `source condaenv-deactivate`
 ##?
 ##? Usage:
 ##?   source condaenv-activate <env_name>
 ##?
 ##? Examples:
 ##?   source condaenv-activate my-conda-env
+##?   . condaenv-activate my-conda-env
 
 get_help() {
   grep "^##?" "$1" | cut -c 5-
@@ -19,15 +22,23 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then # $ condaenv-activate ...
   exit 1 # `return` is not allowed
 elif [ "$#" != 1 ]; then # $ source condaenv-activate a ...
   echo "$(get_help ${BASH_SOURCE[0]})"
-  return 1 # `exit` will close the terminal window
+  return 1 # `exit` will close the terminal window because we're using `source`
 fi
 
 env_name="$1"
 
-python_current=$(which python | xargs dirname)
+# Current values
+PYTHON_CURRENT=$(which python | xargs dirname)
+export PYTHONPATH_CURRENT="${PYTHONPATH}"
+export PYTHONHOME_CURRENT="${PYTHONHOME}"
+export PATH_CURRENT="${PATH}"
+
+# Activate environment
 source activate ${env_name} || return 1
-python_env=$(conda info | awk '/default environment : / {print $4}')
+
+# Remove everything that could link to the local environment
 unset PYTHONPATH
 unset PYTHONHOME
-# export PATH=${python_evn}/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin # create a new $PATH
-export PATH=$(echo "$PATH" | gsed -r "s~:?${python_current}~~") # remove the current python from the $PATH
+# python_env=$(conda info | awk '/default environment : / {print $4}')
+# export PATH=${python_env}/bin:/bin:/usr/local/bin:/usr/bin:/usr/sbin:/sbin # create a new $PATH
+export PATH=$(echo "$PATH" | gsed -r "s~:?${PYTHON_CURRENT}~~") # remove the current python from the $PATH
