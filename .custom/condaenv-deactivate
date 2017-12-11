@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# condaenv-deactivate 0.1.0
+
+##? Deactivate conda environment.
+##?
+##? Usage:
+##?   source condaenv-deactivate
+##?   . condaenv-deactivate
+
+get_help() {
+  grep "^##?" "$1" | cut -c 5-
+}
+
+if [ "${BASH_SOURCE[0]}" = "${0}" ]; then # $ condaenv-deactivate ...
+  echo "$(get_help $0)"
+  exit 1 # `return` is not allowed
+fi
+
+source deactivate
+
+# Restore values
+export PATH="${PATH_CURRENT}"
+export PYTHONPATH="${PYTHONPATH_CURRENT}"
+export PYTHONHOME="${PYTHONHOME_CURRENT}"
