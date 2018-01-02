@@ -47,12 +47,16 @@ alias lsfiles="ls -l | grep -v '^d' | sed 1d"  # "sed 1d" or "tail -n +2" to rem
 alias lsdir="ls -l | grep '^d'"
 alias nb="jupyter notebook"
 alias myip="ipconfig getifaddr en0"
+
+
+# Appearance
+# ==========
 export CLICOLOR=1  # ls -G
+alias spark-shell='spark-shell --conf spark.driver.extraJavaOptions="-Dscala.color"'
 
 
 # Utilities
 # =========
-
 UTILS_FILE="${CUSTOM_PATH}/utils"
 source_if_exists "${UTILS_FILE}"
 export PATH="${CUSTOM_PATH}:${PATH}"
@@ -60,7 +64,6 @@ export PATH="${CUSTOM_PATH}:${PATH}"
 
 # TOKENS
 # ======
-
 TOKEN_FILE="${CUSTOM_PATH}/tokens"
 source_if_exists "${TOKEN_FILE}"
 
@@ -114,7 +117,7 @@ export PS1="\n[\D{%T}] \[\033[0;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=true # unstaged ('*') and staged ('+') changes next to the branch name
 export GIT_PS1_SHOWSTASHSTATE=true # '$' next to the branch name if something is stashed
-export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there're untracked files
+export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there are untracked files
 export GIT_PS1_SHOWUPSTREAM="auto verbose" # difference between HEAD and its upstream: '<' (you are behind), '>' (you are ahead), '<>' (you have diverged), '=' (no difference)
 export GIT_PS1_DESCRIBE_STYLE="branch" # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
 # export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND

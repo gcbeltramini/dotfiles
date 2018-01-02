@@ -50,17 +50,3 @@ ipynb_cleanmetadata() {
   jq --indent 1 '.cells[].metadata = {}' "$1" > ${tmpfile}
   mv ${tmpfile} "$1"
 }
-
-github_search_repos() {
-  # Search for file in GitHub
-  # 
-  # Usage
-  # -----
-  # github_search_repos <organization> <filename> <search-text>
-  
-  curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-    "https://api.github.com/search/code?q=org:$1+filename:$2+$3&page=1&per_page=100&sort=indexed&order=desc" \
-    | jq .items \
-    | jq -r '.[].repository.name' \
-    | awk '!x[$0]++'
-}

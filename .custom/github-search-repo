@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# To use this:
+# $ pip install docopts
+
+#? github-search-repo 0.1.0
+
+##? Search for repository name in GitHub
+##?
+##? Usage:
+##?   github-search-repo [options] <text>
+##?
+##? Options:
+##?     <text>                      Text to search
+##?     --organization org          Organization
+##?     --filename filename         Filename
+##?
+##? Examples:
+##?     github-search-repo foo
+##?     github-search-repo --organization google foo
+##?     github-search-repo --filename 'setup.exe' foo
+
+help=$(grep "^##?" "$0" | cut -c 5-)
+version=$(grep "^#?" "$0" | cut -c 4-)
+eval "$(docopts -h "$help" -V "$version" : "$@")"
+
+
+if [ ! -z "${organization}" ]; then
+  org_search="org:${organization}+"
+else
+  org_search=""
+fi
+if [ ! -z "${filename}" ]; then
+  file_search="filename:${filename}+"
+else
+  file_search=""
+fi
+
+curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
+  "https://api.github.com/search/code?q=${org_search}${file_search}${text}&page=1&per_page=100&sort=indexed&order=desc" \
+  | jq .items \
+  | jq -r '.[].repository.name' \
+  | awk '!x[$0]++'
