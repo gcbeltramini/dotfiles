@@ -82,7 +82,6 @@ export LANG=en_US.UTF-8
 # After running `$ pyspark`, import os; os.environ['SPARK_HOME'] results in "/usr/local/Cellar/apache-spark/2.0.1/libexec"
 # because Spark was installed with `brew` so it's not necessary to:
 # export SPARK_HOME="/usr/local/Cellar/apache-spark/2.2.0/libexec/"
-# export SPARK_HOME="/usr/local/Cellar/apache-spark/spark-2.0.1-bin-scala-2.11-nubank-1"
 # export PATH="$SPARK_HOME/bin:$PATH"
 
 
