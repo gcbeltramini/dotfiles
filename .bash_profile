@@ -39,20 +39,20 @@ alias master="git pull origin master"
 # -------
 alias desktop="cd ${HOME}/Desktop/"
 alias downloads="cd ${HOME}/Downloads/"
-alias ll="gls -lAhF --color=always --time-style='+%Y-%m-%d %H:%M:%S %z' \
+alias ll="ls -lAhF --color=always --time-style='+%Y-%m-%d %H:%M:%S %z' \
   | sed 1d"
-# install `gls` with:
-# $ brew install coreutils
+# `ls` must be GNU-ls. In MacOS, `ls` will be `gls`: $ brew install coreutils
 alias lsfiles="ls -l | grep -v '^d' | sed 1d"  # "sed 1d" or "tail -n +2" to remove the first line
-alias lsdir="ls -l | grep '^d'"
+alias lsdir="ls -l | grep '^d' --color=never"
 alias nb="jupyter notebook"
-alias myip="ipconfig getifaddr en0"
+# alias myip="ipconfig getifaddr en0"  # only in MacOS
 
 
 # Appearance
 # ==========
 export CLICOLOR=1  # ls -G
 alias spark-shell='spark-shell --conf spark.driver.extraJavaOptions="-Dscala.color"'
+alias scala="scala -Dscala.color"
 
 
 # Utilities
@@ -112,7 +112,7 @@ __git_complete gco _git_checkout
 # Custom prompt
 # =============
 
-export PS1="\n[\D{%T}] \[\033[0;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
+export PS1="\n[\D{%T}] \[\033[01;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=true # unstaged ('*') and staged ('+') changes next to the branch name
