@@ -7,7 +7,7 @@
 
 ##? Search for things.
 ##?
-##? On linux, use the $BROWSER env var, so it must be set.
+##? On linux, use the `xdg-open`.
 ##?
 ##? Usage:
 ##?   search web (--google|--wikipedia|--stackoverflow) <web_text>
@@ -40,7 +40,7 @@ eval "$(docopts -h "$help" -V "$version" : "$@")"
 if is_osx; then
   open_cmd=open;
 else
-  open_cmd=$BROWSER;
+  open_cmd=xdg-open;
 fi
 
 if ${web}; then
