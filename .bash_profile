@@ -1,8 +1,6 @@
 # Initialize
 # ==========
 
-export CUSTOM_PATH="${HOME}/.custom"
-
 source_if_exists() {
   # Run `source` if file exists
   # 
@@ -57,6 +55,8 @@ alias scala="scala -Dscala.color"
 
 # Utilities
 # =========
+export CODE_HOME="${HOME}/Code"
+export CUSTOM_PATH="${CODE_HOME}/gcbeltramini/dotfiles/.custom"
 UTILS_FILE="${CUSTOM_PATH}/utils"
 source_if_exists "${UTILS_FILE}"
 export PATH="${CUSTOM_PATH}:${PATH}"
@@ -64,7 +64,7 @@ export PATH="${CUSTOM_PATH}:${PATH}"
 
 # TOKENS
 # ======
-TOKEN_FILE="${CUSTOM_PATH}/tokens"
+TOKEN_FILE="${HOME}/.credentials/tokens"
 source_if_exists "${TOKEN_FILE}"
 
 
