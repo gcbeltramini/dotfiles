@@ -126,3 +126,11 @@ if [ -f "${GIT_PROMPT_FILE}" ]; then
 fi
 
 export PS1="${PS1}\[\033[00m\] \$ "
+
+
+# New apps
+# ========
+
+# miniconda (conda >= 4.4)
+. "${HOME}/miniconda3/etc/profile.d/conda.sh"
+conda activate
