@@ -53,11 +53,11 @@ if ${web}; then
   fi
 elif ${local}; then
   if ${file}; then
-    find ${path} -type f -name ${local_text};
+    find "${path}" -type f -name "${local_text}";
   elif ${directory}; then
-    find ${path} -type d -name ${local_text};
+    find "${path}" -type d -name "${local_text}";
   elif ${content}; then
-    grep --color=always -rnH ${path} -e ${local_text};
+    grep --color=always -rnH "${path}" -e "${local_text}";
   fi
 fi
 
