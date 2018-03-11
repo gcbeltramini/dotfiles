@@ -55,7 +55,7 @@ alias scala="scala -Dscala.color"
 
 # Utilities
 # =========
-export CODE_HOME="${HOME}/Code"
+export CODE_HOME="${HOME}/code"
 export CUSTOM_PATH="${CODE_HOME}/gcbeltramini/dotfiles/.custom"
 UTILS_FILE="${CUSTOM_PATH}/utils"
 source_if_exists "${UTILS_FILE}"
@@ -132,5 +132,7 @@ export PS1="${PS1}\[\033[00m\] \$ "
 # ========
 
 # miniconda (conda >= 4.4)
+# export PATH="${HOME}/miniconda3/bin:$PATH"
+# Deprecated: https://github.com/conda/conda/blob/0734fdf12f112b5a2a1ced81526715a08ef29519/CHANGELOG.md#recommended-change-to-enable-conda-in-your-shell
 . "${HOME}/miniconda3/etc/profile.d/conda.sh"
-conda activate
+conda activate base
