@@ -7,12 +7,7 @@ source_if_exists() {
   # Usage:
   #   source_if_exists i_exist
   #   source_if_exists i_dont_exist
-
-  if [ -f "$1" ]; then
-    source "$1"
-    return 0
-  fi
-  return 1
+  [[ -f "$1" ]] && source "$1"
 }
 
 
@@ -24,10 +19,14 @@ source_if_exists() {
 alias ga="git add"
 alias gb="git branch"
 alias gc="git commit"
-alias gs="git status"
 alias gco="git checkout"
+alias gd="git diff"
+alias gf="git fetch --all --prune"
+alias gm="git merge"
+alias gp="git pull"
+alias gs="git status"
 alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
-alias master="git pull origin master"
+alias master="gf && gm origin/master"
 # git config --global alias.please 'push --force-with-lease'
 # =>
 # git please = git push --force-with-lease
@@ -71,7 +70,7 @@ source_if_exists "${TOKEN_FILE}"
 # To handle non-ASCII characters
 # ==============================
 export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8  http://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html#tag_002_002
 
 
 # Spark
@@ -107,6 +106,10 @@ source_if_exists "${HOME}/.git-completion.bash"
 __git_complete ga _git_add
 __git_complete gb _git_branch
 __git_complete gco _git_checkout
+__git_complete gd _git_diff
+__git_complete gf _git_fetch
+__git_complete gm _git_merge
+__git_complete gp _git_pull
 
 
 # Custom prompt
