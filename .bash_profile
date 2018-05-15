@@ -106,6 +106,8 @@ source_if_exists "${HOME}/.git-completion.bash"
 __git_complete ga _git_add
 __git_complete gb _git_branch
 __git_complete gco _git_checkout
+__git_complete gd _git_diff
+__git_complete gf _git_fetch
 __git_complete gm _git_merge
 __git_complete gp _git_pull
 
