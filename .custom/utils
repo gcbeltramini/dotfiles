@@ -57,7 +57,7 @@ files_not_ending_with_newline() {
   # Ignore extensions: pyc
   # 
   # Usage:
-  #   files_not_ending_with_newline  # will look at the current folder
+  #   files_not_ending_with_newline  # look at the current folder
   #   files_not_ending_with_newline path/to/folder
   # 
   # References:
@@ -73,4 +73,29 @@ files_not_ending_with_newline() {
     -not -path '*/.idea/*' \
     -print0 | \
   xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "$0"'
+}
+
+repos_with_stash_entries() {
+  # List git repositories with stash entries.
+  #
+  # Usage:
+  #   repos_with_stash_entries  # look at the current folder
+  #   repos_with_stash_entries path/to/folder
+  #
+  # References:
+  # - "How to loop through file names returned by find?":
+  #   https://stackoverflow.com/a/9612560/7649076
+  # - `${string%substring}` in
+  #   https://www.tldp.org/LDP/abs/html/string-manipulation.html
+  # - `${var%Pattern}` in
+  #   https://www.tldp.org/LDP/abs/html/parameter-substitution.html
+
+  curr_dir=$(pwd)
+  echo "Repositories with nonempty stash:"
+  find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
+    while read -d $'\0' repo; do
+      cd "${repo%.git}"
+      [[ $(git stash list) ]] && echo "${repo%.git}"
+      cd "${curr_dir}"
+    done
 }
