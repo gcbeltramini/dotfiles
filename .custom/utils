@@ -83,7 +83,12 @@ repos_with_stash_entries() {
   #   repos_with_stash_entries path/to/folder
   #
   # References:
-  # - https://stackoverflow.com/a/9612560/7649076
+  # - "How to loop through file names returned by find?":
+  #   https://stackoverflow.com/a/9612560/7649076
+  # - `${string%substring}` in
+  #   https://www.tldp.org/LDP/abs/html/string-manipulation.html
+  # - `${var%Pattern}` in
+  #   https://www.tldp.org/LDP/abs/html/parameter-substitution.html
 
   curr_dir=$(pwd)
   echo "Repositories with nonempty stash:"
