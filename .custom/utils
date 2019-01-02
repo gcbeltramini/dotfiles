@@ -50,3 +50,27 @@ ipynb_cleanmetadata() {
   jq --indent 1 '.cells[].metadata = {}' "$1" > ${tmpfile}
   mv ${tmpfile} "$1"
 }
+
+files_not_ending_with_newline() {
+  # List files that do not end with a newline.
+  # Ignore folders: .git, .idea
+  # Ignore extensions: pyc
+  # 
+  # Usage:
+  #   files_not_ending_with_newline  # will look at the current folder
+  #   files_not_ending_with_newline path/to/folder
+  # 
+  # References:
+  # - Based on: https://stackoverflow.com/a/25686825/7649076
+  # - "Why should text files end with a newline?":
+  #   https://stackoverflow.com/questions/729692/why-should-text-files-end-with-a-newline
+  
+  echo "No newline at the end of:"
+  gfind "${1:-.}" \
+    -type f \
+    -not -name '*.pyc' \
+    -not -path '*/.git/*' \
+    -not -path '*/.idea/*' \
+    -print0 | \
+  xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "$0"'
+}
