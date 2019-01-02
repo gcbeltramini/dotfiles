@@ -76,7 +76,7 @@ files_not_ending_with_newline() {
 }
 
 repos_with_stash_entries() {
-  # List git repositories with stash entries.
+  # List git repositories with nonempty stash entries.
   #
   # Usage:
   #   repos_with_stash_entries  # look at the current folder
@@ -91,11 +91,29 @@ repos_with_stash_entries() {
   #   https://www.tldp.org/LDP/abs/html/parameter-substitution.html
 
   curr_dir=$(pwd)
-  echo "Repositories with nonempty stash:"
   find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
     while read -d $'\0' repo; do
       cd "${repo%.git}"
       [[ $(git stash list) ]] && echo "${repo%.git}"
+      cd "${curr_dir}"
+    done
+}
+
+repos_with_local_branches() {
+  # List git repositories with more than one local branch.
+  #
+  # Usage:
+  #   repos_with_local_branches  # look at the current folder
+  #   repos_with_local_branches path/to/folder
+  #
+  # References:
+  # - `repos_with_stash_entries`
+
+  curr_dir=$(pwd)
+  find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
+    while read -d $'\0' repo; do
+      cd "${repo%.git}"
+      [[ $(git branch | wc -l | tr -d ' ') > 1 ]] && echo "${repo%.git}"
       cd "${curr_dir}"
     done
 }
