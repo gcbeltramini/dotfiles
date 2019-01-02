@@ -75,6 +75,23 @@ files_not_ending_with_newline() {
   xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "$0"'
 }
 
+commands_find() {
+  # Find commands that contain regular expression.
+  # It is also useful to find which commands are autocompleted, if you search
+  # for commands that start with a certain text.
+  # 
+  # Usage:
+  #   commands_find        # all commands
+  #   commands_find foo    # commands that contain "foo"
+  #   commands_find '^bar' # commands that start with "bar"
+  #   commands_find 'baz$' # commands that end with "baz"
+  # 
+  # References:
+  # - https://unix.stackexchange.com/a/127508
+  # - https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
+  compgen -abck -A function | grep -e "${1:-}" | sort | uniq
+}
+
 repos_with_stash_entries() {
   # List git repositories with nonempty stash entries.
   #
