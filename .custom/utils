@@ -81,10 +81,10 @@ commands_find() {
   # for commands that start with a certain text.
   # 
   # Usage:
-  #   find_commands        # all commands
-  #   find_commands foo    # commands that contain "foo"
-  #   find_commands '^bar' # commands that start with "bar"
-  #   find_commands 'baz$' # commands that end with "baz"
+  #   commands_find        # all commands
+  #   commands_find foo    # commands that contain "foo"
+  #   commands_find '^bar' # commands that start with "bar"
+  #   commands_find 'baz$' # commands that end with "baz"
   # 
   # References:
   # - https://unix.stackexchange.com/a/127508
