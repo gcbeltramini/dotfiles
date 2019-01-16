@@ -132,3 +132,21 @@ repos_with_local_branches() {
       popd 1> /dev/null
     done
 }
+
+repos_with_changes() {
+  # List git repositories where changes have been made in the current branch.
+  #
+  # Usage:
+  #   repos_with_changes  # look at the current folder
+  #   repos_with_changes path/to/folder
+  #
+  # References:
+  # - `repos_with_stash_entries`
+
+  find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
+    while read -d $'\0' repo; do
+      pushd "${repo%.git}" 1> /dev/null
+      [[ $(git diff --name-only origin/master...) || $(git status -s) ]] && echo "${repo%.git}"
+      popd 1> /dev/null
+    done
+}
