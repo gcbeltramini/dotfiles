@@ -92,6 +92,11 @@ commands_find() {
   compgen -abck -A function | grep -e "${1:-}" | sort | uniq
 }
 
+yaml2json() {
+  python3.6 -c 'import sys, yaml, json; json.dump(yaml.load(sys.stdin), sys.stdout, indent=2)' < "$1"
+  # ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))' "$1"
+}
+
 repos_with_stash_entries() {
   # List git repositories with nonempty stash entries.
   #
