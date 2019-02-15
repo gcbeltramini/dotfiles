@@ -5,39 +5,100 @@
 
 #? github-search-repo 0.1.0
 
-##? Search for repository name in GitHub
+##? Search for repository name in GitHub.
+##? Considerations: https://help.github.com/articles/searching-code/#considerations-for-code-search
+##? The text to search and name of file are encoded (use the debug option to verify).
 ##?
 ##? Usage:
-##?   github-search-repo [options] <text>
+##?   github-search-repo <text> [--user <username> | --organization <org> | --repo <reponame>] [options]
 ##?
 ##? Options:
-##?     <text>                      Text to search
-##?     --organization org          Organization
-##?     --filename filename         Filename
+##?   <text>                Text to search (can be empty in special cases)
+##?   --in <file-or-path>   Search in file contents ("file"), path ("path") or either one ("file,path")
+##?   --user <username>     User name (e.g., "foo" will search code owned by @foo)
+##?   --organization <org>  Organization name (e.g., "corp" will search code owned by "corp")
+##?   --repo <reponame>     Name of repository (e.g., "some-user/their-repo")
+##?   --path <pathname>     Specific location in a repository (e.g., "/", "path/to/content")
+##?   --language <lang>     Language in which the code is written
+##?   --size <s>            Size of file in bytes (e.g., "<987", "<=1024", "314", ">=121", ">256")
+##?   --filename <fname>    Name of file
+##?   --extension <ext>     File extension
+##?   --page <page>         Page number [default: 1]
+##?   --per_page <items>    Number of items per page [default: 100]
+##?   --order <sort_order>  Whether the first search result returned is the highest number of matches ("desc") or lowest number of matches ("asc") [default: desc]
+##?   --full_result         Otherwise, display only the repository name
+##?   --debug               Print the URL
 ##?
 ##? Examples:
-##?     github-search-repo foo
-##?     github-search-repo --organization google foo
-##?     github-search-repo --filename 'setup.exe' foo
+##?   github-search-repo "some, content!"
+##?   github-search-repo foo --user torvalds
+##?   github-search-repo foo --organization google
+##?   github-search-repo foo --filename "setup.py" --path "src/main" --repo "some-user/some-repo"
+##?   github-search-repo foo --in "file,path"
+##?   github-search-repo "File name! (1).ipynb" --in "path"
+##?   github-search-repo foo --language python --extension py --size "<=1000"
+##?   github-search-repo search-me --in "file,path" --repo "usr/repo" --path "/" --language "lng" --size "<=42" --filename f_name --extension py --debug
+##?
+##? References:
+##? - https://help.github.com/articles/searching-code/
+##? - https://help.github.com/articles/understanding-the-search-syntax/
 
 help=$(grep "^##?" "$0" | cut -c 5-)
 version=$(grep "^#?" "$0" | cut -c 4-)
 eval "$(docopts -h "$help" -V "$version" : "$@")"
 
+add_to_query() {
+  local query="$1"
+  local arg="$2"
+  local arg_prefix="$3"
 
-if [ ! -z "${organization}" ]; then
-  org_search="org:${organization}+"
-else
-  org_search=""
-fi
-if [ ! -z "${filename}" ]; then
-  file_search="filename:${filename}+"
-else
-  file_search=""
+  if [[ ! -z "${arg}" ]]; then
+    echo "${query}${arg_prefix}:${arg}+"
+  else
+    echo "${query}"
+  fi
+}
+
+encode_text() {
+  local txt="$1"
+
+  if command -v xxd > /dev/null; then
+    echo -ne "${txt}" | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g'
+  elif command -v hexdump > /dev/null; then
+    echo -ne "${txt}" | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g'
+  else
+    echo "${text}"
+  fi
+}
+
+query=""
+query=$(add_to_query "${query}" "${in}" "in")
+query=$(add_to_query "${query}" "${user}" "user")
+query=$(add_to_query "${query}" "${organization}" "org")
+query=$(add_to_query "${query}" "${repo}" "repo")
+query=$(add_to_query "${query}" "${path}" "path")
+query=$(add_to_query "${query}" "${language}" "language")
+query=$(add_to_query "${query}" "${size}" "size")
+query=$(add_to_query "${query}" $(encode_text "${filename}") "filename")
+query=$(add_to_query "${query}" "${extension}" "extension")
+
+url_plain="https://api.github.com/search/code?q=${query}${text}&page=${page}&per_page=${per_page}&sort=indexed&order=${order}"
+url="https://api.github.com/search/code?q=${query}$(encode_text "${text}")&page=${page}&per_page=${per_page}&sort=indexed&order=${order}"
+
+if "${debug}"; then
+  echo "The plain URL is:"
+  echo "${url_plain}"
+  echo "The URL with the text to search encoded (used to query) is:"
+  echo "${url}"
+  exit 1
 fi
 
-curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-  "https://api.github.com/search/code?q=${org_search}${file_search}${text}&page=1&per_page=100&sort=indexed&order=desc" \
-  | jq .items \
-  | jq -r '.[].repository.name' \
-  | awk '!x[$0]++'
+res=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" "${url}")
+if "${full_result}"; then
+  echo "${res}"
+else
+  echo "${res}" \
+    | jq .items \
+    | jq -r '.[].repository.name' \
+    | awk '!x[$0]++'
+fi
