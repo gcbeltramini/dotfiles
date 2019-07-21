@@ -51,6 +51,24 @@ conda-update-all() {
   conda clean --all --yes
 }
 
+ll() {
+  local path="${1:-$(pwd)}"
+  # `ls` must be GNU-ls. In MacOS, `ls` will be `gls`: $ brew install coreutils
+  gls -lAhF --color=always --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" \
+  | sed 1d  # "sed 1d" or "tail -n +2" to remove the first line
+}
+
+lsfiles() {
+  local path="${1:-$(pwd)}"
+  ls -l "${path}" | grep -v '^d' | sed 1d
+}
+
+lsdir() {
+  local path="${1:-$(pwd)}"
+  ls -l "${path}" | grep '^d' --color=never
+}
+
+
 llfull() {
   # `ls` with some information and header
   local path="${1:-$(pwd)}"

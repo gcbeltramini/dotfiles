@@ -52,11 +52,6 @@ alias master="gf && gm origin/master"
 # -------
 alias desktop="cd ${HOME}/Desktop/"
 alias downloads="cd ${HOME}/Downloads/"
-alias ll="ls -lAhF --color=always --time-style='+%Y-%m-%d %H:%M:%S %z' \
-  | sed 1d"
-# `ls` must be GNU-ls. In MacOS, `ls` will be `gls`: $ brew install coreutils
-alias lsfiles="ls -l | grep -v '^d' | sed 1d"  # "sed 1d" or "tail -n +2" to remove the first line
-alias lsdir="ls -l | grep '^d' --color=never"
 alias nb="jupyter notebook"
 alias myip-internal="ipconfig getifaddr en0"  # only in macOS
 alias myip-external="curl ipecho.net/plain ; echo"  # or: "curl ifconfig.me"
