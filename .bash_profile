@@ -73,6 +73,12 @@ conda-update-all() {
 }
 
 
+# To handle non-ASCII characters
+# ==============================
+export LC_ALL=en_US.UTF-8
+# export LANG=en_US.UTF-8  http://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html#tag_002_002
+
+
 # Aliases
 # =======
 
@@ -115,45 +121,6 @@ alias treeclean="tree -a -I '.idea|target|.git'"
 alias pip="python3 -m pip"
 
 
-# Appearance
-# ==========
-export CLICOLOR=1  # ls -G
-alias spark-shell='spark-shell --conf spark.driver.extraJavaOptions="-Dscala.color"'
-alias scala="scala -Dscala.color"
-
-
-# Utilities
-# =========
-export CODE_HOME="${HOME}/code"
-export CUSTOM_PATH="${CODE_HOME}/gcbeltramini/dotfiles/.custom"
-UTILS_FILE="${CUSTOM_PATH}/utils"
-source_if_exists "${UTILS_FILE}"
-export PATH="${CUSTOM_PATH}:${PATH}"
-
-
-# TOKENS
-# ======
-TOKEN_FILE="${HOME}/.credentials/tokens"
-source_if_exists "${TOKEN_FILE}"
-
-
-# To handle non-ASCII characters
-# ==============================
-export LC_ALL=en_US.UTF-8
-# export LANG=en_US.UTF-8  http://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html#tag_002_002
-
-
-# Spark
-# =====
-# export PYSPARK_SUBMIT_ARGS="--master local[2]"
-# alias pyspark-ipython="PYSPARK_DRIVER_PYTHON=ipython pyspark"  # needs $SPARK_HOME
-# alias pyspark-jupyter="PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\" pyspark"  # needs $SPARK_HOME
-# After running `$ pyspark`, import os; os.environ['SPARK_HOME'] results in "/usr/local/Cellar/apache-spark/2.0.1/libexec"
-# because Spark was installed with `brew` so it's not necessary to:
-# export SPARK_HOME="/usr/local/Cellar/apache-spark/2.2.0/libexec/"
-# export PATH="$SPARK_HOME/bin:$PATH"
-
-
 # Git
 # ===
 
@@ -190,10 +157,21 @@ if [ -f "${GIT_COMPLETION_FILE}" ]; then
 fi
 
 
-# Custom prompt
-# =============
+# Appearance
+# ==========
+export HISTTIMEFORMAT="%Y-%m-%d %T "
+export CLICOLOR=1  # in macOS, equivalent to: ls -G
+export LEIN_SUPPRESS_USER_LEVEL_REPO_WARNINGS=true
+alias sbt="TERM=xterm-color sbt -Dscala.color"
+# References:
+# - https://github.com/sbt/sbt/issues/3240#issuecomment-306421046 (enables autocomplete and navigation with arrows)
+# - https://stackoverflow.com/a/33832205/7649076 (color in the REPL)
+alias spark-shell='spark-shell --conf spark.driver.extraJavaOptions="-Dscala.color"'
 
-export PS1="\n[\D{%T}] \[\033[01;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
+# Custom prompt
+# -------------
+
+export PS1="\n[\D{%T}] \[\033[1;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
 
 # Git
 export GIT_PS1_SHOWDIRTYSTATE=true # unstaged ('*') and staged ('+') changes next to the branch name
@@ -201,19 +179,91 @@ export GIT_PS1_SHOWSTASHSTATE=true # '$' next to the branch name if something is
 export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there are untracked files
 export GIT_PS1_SHOWUPSTREAM="auto verbose" # difference between HEAD and its upstream: '<' (you are behind), '>' (you are ahead), '<>' (you have diverged), '=' (no difference)
 export GIT_PS1_DESCRIBE_STYLE="branch" # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
-# export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
+export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
 if [ -f "${GIT_PROMPT_FILE}" ]; then
   export PS1="${PS1}\[\033[0;31m\]\$(__git_ps1 \" (%s)\")\[\033[0m\]"
 fi
 
-export PS1="${PS1}\[\033[00m\] \$ "
+export PS1="${PS1}\[\033[0m\] \$ "
 
 
-# New apps
+# Programs
 # ========
 
+# Default editor
+# --------------
+export EDITOR="subl -w -n"
+
+# Homebrew
+# --------
+if is_valid_command brew; then export PATH="$(brew --prefix)/sbin:${PATH}"; fi
+
+# jEnv
+# ----
+if is_valid_command jenv; then
+  export PATH="${HOME}/.jenv/bin:${PATH}"
+  eval "$(jenv init -)";
+fi
+
+# rbenv
+# -----
+if is_valid_command rbenv; then eval "$(rbenv init -)"; fi
+
+# Miniconda/Anaconda Python
+# -------------------------
 # miniconda (conda >= 4.4)
 # export PATH="${HOME}/miniconda3/bin:$PATH"
 # Deprecated: https://github.com/conda/conda/blob/0734fdf12f112b5a2a1ced81526715a08ef29519/CHANGELOG.md#recommended-change-to-enable-conda-in-your-shell
 . "${HOME}/miniconda3/etc/profile.d/conda.sh"
 conda activate base
+
+
+# Autocomplete
+# ============
+
+# https://docs.brew.sh/Shell-Completion
+if is_valid_command brew; then
+  
+  case $- in
+    *e* ) set_e=true && set +e ;;
+    * )   set_e=false ;;
+  esac
+  
+  for completion_file in $(brew --prefix)/etc/bash_completion.d/*; do
+    source "${completion_file}"
+  done
+  
+  # bash-completion@2
+  source_if_exists "$(brew --prefix)/share/bash-completion/bash_completion"
+  
+  [[ "${set_e}" = true ]] && set -e
+  
+fi
+
+source_if_exists "${NUCLI_HOME}/nu.bashcompletion"
+
+
+# Utilities
+# =========
+export CODE_HOME="${HOME}/code"
+export CUSTOM_PATH="${CODE_HOME}/gcbeltramini/dotfiles/.custom"
+UTILS_FILE="${CUSTOM_PATH}/utils"
+source_if_exists "${UTILS_FILE}"
+export PATH="${CUSTOM_PATH}:${PATH}"
+
+
+# Tokens
+# ======
+TOKEN_FILE="${HOME}/.credentials/tokens"
+source_if_exists "${TOKEN_FILE}"
+
+
+# Spark
+# =====
+# export PYSPARK_SUBMIT_ARGS="--master local[2]"
+# alias pyspark-ipython="PYSPARK_DRIVER_PYTHON=ipython pyspark"  # needs $SPARK_HOME
+# alias pyspark-jupyter="PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS=\"notebook\" pyspark"  # needs $SPARK_HOME
+# After running `$ pyspark`, import os; os.environ['SPARK_HOME'] results in "/usr/local/Cellar/apache-spark/2.0.1/libexec"
+# because Spark was installed with `brew` so it's not necessary to:
+# export SPARK_HOME="/usr/local/Cellar/apache-spark/2.2.0/libexec/"
+# export PATH="$SPARK_HOME/bin:$PATH"
