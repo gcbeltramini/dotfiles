@@ -119,6 +119,16 @@ alias treeclean="tree -a -I '.idea|target|.git'"
 alias pip="python3 -m pip"
 
 
+# Utilities
+# =========
+
+# ranger (https://github.com/ranger/ranger) - brew install ranger
+# ------
+# navigate and display file content. When exit, enter the last folder
+alias rg='ranger --choosedir=${HOME}/.rangerdir; LASTDIR=`cat ${HOME}/.rangerdir`; cd "${LASTDIR}"'
+# Source: https://superuser.com/a/1043815
+
+
 # Git
 # ===
 
