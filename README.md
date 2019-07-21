@@ -4,5 +4,5 @@ My home directory dotfiles
 ## Requirements
 - docopts:
 ```bash
-$ pip install docopts
+$ python -m pip install docopts
 ```
