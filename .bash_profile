@@ -26,12 +26,10 @@ cdh() {
     cd "$1"
     cdh__idx=$((++cdh__idx))  # or: cdh__idx+=1
     cdh__dirs_history[cdh__idx]=$(pwd)
-  else
-    if [[ "${cdh__idx}" -gt 0 ]]; then
-      cdh__dirs_history[cdh__idx]=""
-      cdh__idx=$((--cdh__idx))
-      cd "${cdh__dirs_history[$cdh__idx]}"
-    fi
+  elif [[ "${cdh__idx}" -gt 0 ]]; then
+    cdh__dirs_history[cdh__idx]=""
+    cdh__idx=$((--cdh__idx))
+    cd "${cdh__dirs_history[$cdh__idx]}"
   fi
 }
 
@@ -124,8 +122,8 @@ alias pip="python3 -m pip"
 # Git
 # ===
 
-# git-prompt.sh    : display current branch in bash (variable `__git_ps1`)
-# -----------------
+# git-prompt.sh: display current branch in bash (variable `__git_ps1`)
+# -------------
 # Following http://git-prompt.sh/, run in the terminal:
 # curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o "${HOME}"/.git-prompt.sh
 GIT_PROMPT_FILE="${HOME}/.git-prompt.sh"
