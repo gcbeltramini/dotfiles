@@ -2,8 +2,9 @@
 
 llfull() {
   # `ls` with some information and header
-  
-  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' \
+  local path="${1:-$(pwd)}"
+
+  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" \
     | sed 1d \
     | awk -v OFS='\t' 'BEGIN {print "PERMISSION\tLINKS\tOWNER\tGROUP\tSIZE\tDATE\tHH:MM:SS\tTZ\tNAME\n";}
                        {s=""; for (i=9; i<=NF; i++) s=s$i" "; print $1,$2,$3,$4,$5,$6,$7,$8,s;}' \
@@ -12,8 +13,9 @@ llfull() {
 
 llpart() {
   # Similar to `llfull` but with less columns
+  local path="${1:-$(pwd)}"
   
-  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' \
+  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" \
     | sed 1d \
     | awk -v OFS='\t' 'BEGIN {print "SIZE\tDATE\tHH:MM:SS\tTZ\tNAME\n";}
                        {s=""; for (i=9; i<=NF; i++) s=s$i" "; print $5,$6,$7,$8,s;}' \
