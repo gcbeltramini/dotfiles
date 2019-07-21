@@ -87,7 +87,8 @@ alias gf="git fetch --all --prune"
 alias gm="git merge"
 alias gp="git pull"
 alias gs="git status"
-alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+#alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias master="gf && gm origin/master"
 # git config --global alias.please 'push --force-with-lease'
 # =>
@@ -104,7 +105,14 @@ alias ll="ls -lAhF --color=always --time-style='+%Y-%m-%d %H:%M:%S %z' \
 alias lsfiles="ls -l | grep -v '^d' | sed 1d"  # "sed 1d" or "tail -n +2" to remove the first line
 alias lsdir="ls -l | grep '^d' --color=never"
 alias nb="jupyter notebook"
-# alias myip="ipconfig getifaddr en0"  # only in MacOS
+alias myip-internal="ipconfig getifaddr en0"  # only in macOS
+alias myip-external="curl ipecho.net/plain ; echo"  # or: "curl ifconfig.me"
+alias mybash="subl ${HOME}/.bash_profile"
+alias treeclean="tree -a -I '.idea|target|.git'"
+
+# Python
+# ------
+alias pip="python3 -m pip"
 
 
 # Appearance
@@ -149,29 +157,37 @@ export LC_ALL=en_US.UTF-8
 # Git
 # ===
 
-# git-prompt.sh: display current branch in bash (variable `__git_ps1`)
-# -------------
+# git-prompt.sh    : display current branch in bash (variable `__git_ps1`)
+# -----------------
 # Following http://git-prompt.sh/, run in the terminal:
 # curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -o "${HOME}"/.git-prompt.sh
 GIT_PROMPT_FILE="${HOME}/.git-prompt.sh"
-source_if_exists "${GIT_PROMPT_FILE}"
 
 # git-completion.sh: autocomplete git subcommands and other useful stuff
 # -----------------
 # Documentation: https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
-
-# Analogous to get-prompt.sh:
+# Analogous to git-prompt.sh:
 # curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o "${HOME}"/.git-completion.bash
-source_if_exists "${HOME}/.git-completion.bash"
+GIT_COMPLETION_FILE="${HOME}/.git-completion.bash"
+
+if is_valid_command brew; then
+  # brew install bash-completion@2 git
+  GIT_PROMPT_FILE="$(brew --prefix)/etc/bash_completion.d/git-prompt.sh"
+  GIT_COMPLETION_FILE="$(brew --prefix)/etc/bash_completion.d/git-completion.bash"
+fi
+source_if_exists "${GIT_PROMPT_FILE}"
+source_if_exists "${GIT_COMPLETION_FILE}"
 
 # Add git completion to aliases
-__git_complete ga _git_add
-__git_complete gb _git_branch
-__git_complete gco _git_checkout
-__git_complete gd _git_diff
-__git_complete gf _git_fetch
-__git_complete gm _git_merge
-__git_complete gp _git_pull
+if [ -f "${GIT_COMPLETION_FILE}" ]; then
+  __git_complete ga _git_add
+  __git_complete gb _git_branch
+  __git_complete gco _git_checkout
+  __git_complete gd _git_diff
+  __git_complete gf _git_fetch
+  __git_complete gm _git_merge
+  __git_complete gp _git_pull
+fi
 
 
 # Custom prompt
