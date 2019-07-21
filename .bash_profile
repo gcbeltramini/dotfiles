@@ -1,13 +1,75 @@
-# Initialize
-# ==========
+# Functions
+# =========
+
+cdl() {
+  # Change directory and list directory contents.
+  #
+  # Usage:
+  #   cdl /path/to/folder
+  #   cdl -
+  cd "$1" && ls
+}
+
+declare -a cdh__dirs_history
+declare -i cdh__idx=0
+
+cdh() {
+  # Change directory and store history. Useful to use "cdh -".
+  #
+  # Usage:
+  #   cd folder0; cdh folder1; cdh folder2; cdh folder3
+  #   cdh -  # move to folder2; "cd -" will do the same
+  #   cdh -  # move to folder1; "cd -" will move to folder3
+  #   cdh -  # stay in folder1
+  if [[ "$1" != "-" ]]; then
+    [[ "${cdh__idx}" -eq 0 ]] && cdh__dirs_history[cdh__idx]=$(pwd)  # necessary for the first use of "cdh"
+    cd "$1"
+    cdh__idx=$((++cdh__idx))  # or: cdh__idx+=1
+    cdh__dirs_history[cdh__idx]=$(pwd)
+  else
+    if [[ "${cdh__idx}" -gt 0 ]]; then
+      cdh__dirs_history[cdh__idx]=""
+      cdh__idx=$((--cdh__idx))
+      cd "${cdh__dirs_history[$cdh__idx]}"
+    fi
+  fi
+}
 
 source_if_exists() {
-  # Run `source` if file exists
+  # Run `source` if file exists.
   # 
   # Usage:
   #   source_if_exists i_exist
   #   source_if_exists i_dont_exist
-  [[ -f "$1" ]] && source "$1"
+  [[ -f "$1" ]] && source "$1" || :
+}
+
+is_valid_command() {
+  # Check if command is exists.
+  #
+  # Usage:
+  #   is_valid_command foo && echo "'foo' exists"
+  #   is_valid_command ls && echo "'ls' exists"
+  command -v "${1}" > /dev/null
+}
+
+brew-update-all() {
+  brew update
+  brew upgrade
+  brew cask upgrade
+  brew cleanup -s
+
+  echo -e "\n\033[34mInstalled Casks that have newer versions available in the tap,"
+  echo -e "including the Casks that have \`auto_updates true\` or \`version :latest\`:\033[0m"
+  brew cask outdated --greedy
+  echo -e "\n\033[34mTo install them, run \`brew cask upgrade <program-name>\`.\033[0m"
+
+}
+
+conda-update-all() {
+  conda update -n base conda --yes -c defaults
+  conda update --all --yes -c defaults
+  conda clean --all --yes
 }
 
 
