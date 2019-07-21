@@ -20,10 +20,16 @@ is_valid_command() {
 }
 
 
+# Initialize
+# ==========
+# source_if_exists "${HOME}/.bashrc"
+[[ "${BASH_VERSINFO[0]}" -ge 4 ]] && shopt -s autocd  # change directory without `cd`
+
+
 # To handle non-ASCII characters
 # ==============================
 export LC_ALL=en_US.UTF-8
-# export LANG=en_US.UTF-8  http://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html#tag_002_002
+export LANG=en_US.UTF-8
 
 
 # Aliases
@@ -43,16 +49,12 @@ alias gs="git status"
 #alias gl="git log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short"
 alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias master="gf && gm origin/master"
-# git config --global alias.please 'push --force-with-lease'
-# =>
-# git please = git push --force-with-lease
-
 
 # General
 # -------
 alias desktop="cd ${HOME}/Desktop/"
 alias downloads="cd ${HOME}/Downloads/"
-alias nb="jupyter notebook"
+alias nb="jupyter-notebook"
 alias myip-internal="ipconfig getifaddr en0"  # only in macOS
 alias myip-external="curl ipecho.net/plain ; echo"  # or: "curl ifconfig.me"
 alias mybash="subl ${HOME}/.bash_profile"
@@ -71,6 +73,20 @@ alias pip="python3 -m pip"
 # navigate and display file content. When exit, enter the last folder
 alias rg='ranger --choosedir=${HOME}/.rangerdir; LASTDIR=`cat ${HOME}/.rangerdir`; cd "${LASTDIR}"'
 # Source: https://superuser.com/a/1043815
+
+# fzf (https://github.com/junegunn/fzf)
+# ---
+source_if_exists "${HOME}/.fzf.bash"
+cdf() {
+  # cd into folder using fzf
+  local sorce_dir="${1:-$(pwd)}"
+  local target_dir="$(ls ${sorce_dir} | fzf)"
+  cd "${sorce_dir}/${target_dir}"
+}
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+# Using highlight (http://www.andre-simon.de/doku/highlight/en/highlight.html)
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
 
 # Git
@@ -163,11 +179,15 @@ if is_valid_command rbenv; then eval "$(rbenv init -)"; fi
 
 # Miniconda/Anaconda Python
 # -------------------------
-# miniconda (conda >= 4.4)
 # export PATH="${HOME}/miniconda3/bin:$PATH"
 # Deprecated: https://github.com/conda/conda/blob/0734fdf12f112b5a2a1ced81526715a08ef29519/CHANGELOG.md#recommended-change-to-enable-conda-in-your-shell
 . "${HOME}/miniconda3/etc/profile.d/conda.sh"
 conda activate base
+
+# if is_valid_command brew; then
+#   # Otherwise "gettext" will come from "${HOME}/miniconda3/bin"
+#   export PATH="$(brew --prefix)/opt/gettext/bin:${PATH}"
+# fi
 
 
 # Autocomplete
@@ -197,10 +217,8 @@ source_if_exists "${NUCLI_HOME}/nu.bashcompletion"
 
 # Utilities
 # =========
-export CODE_HOME="${HOME}/code"
-export CUSTOM_PATH="${CODE_HOME}/gcbeltramini/dotfiles/.custom"
-UTILS_FILE="${CUSTOM_PATH}/utils"
-source_if_exists "${UTILS_FILE}"
+CUSTOM_PATH="$(dirname ${BASH_SOURCE[0]})/.custom"
+source_if_exists "${CUSTOM_PATH}/utils"
 export PATH="${CUSTOM_PATH}:${PATH}"
 
 
