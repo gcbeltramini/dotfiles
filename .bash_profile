@@ -3,7 +3,7 @@
 
 source_if_exists() {
   # Run `source` if file exists.
-  # 
+  #
   # Usage:
   #   source_if_exists i_exist
   #   source_if_exists i_dont_exist
@@ -114,7 +114,7 @@ source_if_exists "${GIT_PROMPT_FILE}"
 source_if_exists "${GIT_COMPLETION_FILE}"
 
 # Add git completion to aliases
-if [ -f "${GIT_COMPLETION_FILE}" ]; then
+if [[ -f "${GIT_COMPLETION_FILE}" ]]; then
   __git_complete ga _git_add
   __git_complete gb _git_branch
   __git_complete gco _git_checkout
@@ -148,7 +148,7 @@ export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there ar
 export GIT_PS1_SHOWUPSTREAM="auto verbose" # difference between HEAD and its upstream: '<' (you are behind), '>' (you are ahead), '<>' (you have diverged), '=' (no difference)
 export GIT_PS1_DESCRIBE_STYLE="branch" # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
 export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
-if [ -f "${GIT_PROMPT_FILE}" ]; then
+if [[ -f "${GIT_PROMPT_FILE}" ]]; then
   export PS1="${PS1}\[\033[0;31m\]\$(__git_ps1 \" (%s)\")\[\033[0m\]"
 fi
 
@@ -195,21 +195,21 @@ conda activate base
 
 # https://docs.brew.sh/Shell-Completion
 if is_valid_command brew; then
-  
+
   case $- in
     *e* ) set_e=true && set +e ;;
     * )   set_e=false ;;
   esac
-  
+
   for completion_file in $(brew --prefix)/etc/bash_completion.d/*; do
     source "${completion_file}"
   done
-  
+
   # bash-completion@2
   source_if_exists "$(brew --prefix)/share/bash-completion/bash_completion"
-  
+
   [[ "${set_e}" = true ]] && set -e
-  
+
 fi
 
 source_if_exists "${NUCLI_HOME}/nu.bashcompletion"
