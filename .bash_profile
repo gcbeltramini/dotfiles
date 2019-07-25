@@ -19,6 +19,13 @@ is_valid_command() {
   command -v "${1}" > /dev/null
 }
 
+cdf() {
+  # cd into folder using fzf
+  local sorce_dir="${1:-$(pwd)}"
+  local target_dir="$(ls ${sorce_dir} | fzf)"
+  cd "${sorce_dir}/${target_dir}"
+}
+
 
 # Initialize
 # ==========
@@ -74,15 +81,9 @@ alias pip="python3 -m pip"
 alias rg='ranger --choosedir=${HOME}/.rangerdir; LASTDIR=`cat ${HOME}/.rangerdir`; cd "${LASTDIR}"'
 # Source: https://superuser.com/a/1043815
 
-# fzf (https://github.com/junegunn/fzf)
+# fzf (https://github.com/junegunn/fzf) - brew install fzf
 # ---
 source_if_exists "${HOME}/.fzf.bash"
-cdf() {
-  # cd into folder using fzf
-  local sorce_dir="${1:-$(pwd)}"
-  local target_dir="$(ls ${sorce_dir} | fzf)"
-  cd "${sorce_dir}/${target_dir}"
-}
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
 # Using highlight (http://www.andre-simon.de/doku/highlight/en/highlight.html)
@@ -194,7 +195,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-
+# Not sure if this is necessary. For more information: brew info gettext
 # if is_valid_command brew; then
 #   # Otherwise "gettext" will come from "${HOME}/miniconda3/bin"
 #   export PATH="$(brew --prefix)/opt/gettext/bin:${PATH}"
