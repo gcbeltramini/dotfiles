@@ -179,10 +179,21 @@ if is_valid_command rbenv; then eval "$(rbenv init -)"; fi
 
 # Miniconda/Anaconda Python
 # -------------------------
-# export PATH="${HOME}/miniconda3/bin:$PATH"
-# Deprecated: https://github.com/conda/conda/blob/0734fdf12f112b5a2a1ced81526715a08ef29519/CHANGELOG.md#recommended-change-to-enable-conda-in-your-shell
-. "${HOME}/miniconda3/etc/profile.d/conda.sh"
-conda activate base
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$(${HOME}/miniconda3/bin/conda 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "${HOME}/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "${HOME}/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="${HOME}/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
 
 # if is_valid_command brew; then
 #   # Otherwise "gettext" will come from "${HOME}/miniconda3/bin"
