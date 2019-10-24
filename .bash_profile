@@ -26,10 +26,24 @@ is_valid_command() {
 }
 
 cdf() {
-  # cd into folder using fzf
-  local sorce_dir="${1:-$(pwd)}"
-  local target_dir="$(ls ${sorce_dir} | fzf)"
-  cd "${sorce_dir}/${target_dir}"
+  # cd into folder using fzf.
+  #
+  # Usage:
+  #   cdf [<maxdepth>]
+  #
+  # Examples:
+  #   cdf
+  #   cdf 3
+  local maxdepth="${1:-0}"
+  local dirs
+  local dir
+  if shopt -q extglob; then
+    # Display also hidden folders.
+    dirs=$(find @(?(.)*!(.)) -maxdepth "${maxdepth}" -type d 2>/dev/null)
+  else
+    dirs=$(find * -maxdepth "${maxdepth}" -type d 2>/dev/null)
+  fi
+  dir=$(echo "${dirs}" | fzf) && cd "${dir}"
 }
 
 
