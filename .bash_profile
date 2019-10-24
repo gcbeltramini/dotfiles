@@ -5,6 +5,9 @@ source_if_exists() {
   # Run `source` if file exists.
   #
   # Usage:
+  #   source_if_exists <filename>
+  #
+  # Examples:
   #   source_if_exists i_exist
   #   source_if_exists i_dont_exist
   [[ -f "$1" ]] && source "$1" || :
@@ -14,16 +17,33 @@ is_valid_command() {
   # Check if command is exists.
   #
   # Usage:
+  #   is_valid_command <command>
+  #
+  # Examples:
   #   is_valid_command foo && echo "'foo' exists"
   #   is_valid_command ls && echo "'ls' exists"
   command -v "${1}" > /dev/null
 }
 
 cdf() {
-  # cd into folder using fzf
-  local sorce_dir="${1:-$(pwd)}"
-  local target_dir="$(ls ${sorce_dir} | fzf)"
-  cd "${sorce_dir}/${target_dir}"
+  # cd into folder using fzf.
+  #
+  # Usage:
+  #   cdf [<maxdepth>]
+  #
+  # Examples:
+  #   cdf
+  #   cdf 3
+  local maxdepth="${1:-0}"
+  local dirs
+  local dir
+  if shopt -q extglob; then
+    # Display also hidden folders.
+    dirs=$(find @(?(.)*!(.)) -maxdepth "${maxdepth}" -type d 2>/dev/null)
+  else
+    dirs=$(find * -maxdepth "${maxdepth}" -type d 2>/dev/null)
+  fi
+  dir=$(echo "${dirs}" | fzf) && cd "${dir}"
 }
 
 
