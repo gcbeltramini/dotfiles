@@ -151,7 +151,7 @@ fi
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export CLICOLOR=1  # in macOS, equivalent to: ls -G
 export LEIN_SUPPRESS_USER_LEVEL_REPO_WARNINGS=true
-alias sbt="TERM=xterm-color sbt -Dscala.color"
+
 # References:
 # - https://github.com/sbt/sbt/issues/3240#issuecomment-306421046 (enables autocomplete and navigation with arrows)
 # - https://stackoverflow.com/a/33832205/7649076 (color in the REPL)
