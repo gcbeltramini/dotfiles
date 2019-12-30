@@ -51,6 +51,9 @@ cdf() {
 # ==========
 # source_if_exists "${HOME}/.bashrc"
 [[ "${BASH_VERSINFO[0]}" -ge 4 ]] && shopt -s autocd  # change directory without `cd`
+if is_valid_command brew; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+fi
 
 
 # To handle non-ASCII characters
@@ -128,8 +131,8 @@ GIT_COMPLETION_FILE="${HOME}/.git-completion.bash"
 
 if is_valid_command brew; then
   # brew install bash-completion@2 git
-  GIT_PROMPT_FILE="$(brew --prefix)/etc/bash_completion.d/git-prompt.sh"
-  GIT_COMPLETION_FILE="$(brew --prefix)/etc/bash_completion.d/git-completion.bash"
+  GIT_PROMPT_FILE="${HOMEBREW_PREFIX}/etc/bash_completion.d/git-prompt.sh"
+  GIT_COMPLETION_FILE="${HOMEBREW_PREFIX}/etc/bash_completion.d/git-completion.bash"
 fi
 source_if_exists "${GIT_PROMPT_FILE}"
 source_if_exists "${GIT_COMPLETION_FILE}"
@@ -185,7 +188,7 @@ export EDITOR="subl -w -n"
 
 # Homebrew
 # --------
-if is_valid_command brew; then export PATH="$(brew --prefix)/sbin:${PATH}"; fi
+if is_valid_command brew; then export PATH="${HOMEBREW_PREFIX}/sbin:${PATH}"; fi
 
 # jEnv
 # ----
@@ -218,7 +221,7 @@ unset __conda_setup
 # Not sure if this is necessary. For more information: brew info gettext
 # if is_valid_command brew; then
 #   # Otherwise "gettext" will come from "${HOME}/miniconda3/bin"
-#   export PATH="$(brew --prefix)/opt/gettext/bin:${PATH}"
+#   export PATH="${HOMEBREW_PREFIX}/opt/gettext/bin:${PATH}"
 # fi
 
 
@@ -233,12 +236,20 @@ if is_valid_command brew; then
     * )   set_e=false ;;
   esac
 
-  for completion_file in $(brew --prefix)/etc/bash_completion.d/*; do
+  # bash-completion@2
+  # source_if_exists "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion"
+  source_if_exists "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+
+  # Autocomplete for aws, brew, git, ...
+  for completion_file in ${HOMEBREW_PREFIX}/etc/bash_completion.d/*; do
     source "${completion_file}"
   done
 
-  # bash-completion@2
-  source_if_exists "$(brew --prefix)/share/bash-completion/bash_completion"
+  # Autocomplete for many shell commands. Since it's slow, let's choose some:
+  cmds="chmod chown crontab curl file find gtar gzip htop jq kill killall man mktemp mysql pkill pwd pytest python rsync scp sh shellcheck ssh sudo tar watch wget"
+  for completion_file in ${cmds}; do
+    source "${HOMEBREW_PREFIX}/share/bash-completion/completions/${completion_file}"
+  done
 
   [[ "${set_e}" = true ]] && set -e
 
