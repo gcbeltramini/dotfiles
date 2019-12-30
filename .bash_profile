@@ -236,12 +236,20 @@ if is_valid_command brew; then
     * )   set_e=false ;;
   esac
 
-  for completion_file in $(brew --prefix)/etc/bash_completion.d/*; do
+  # bash-completion@2
+  # source_if_exists "${HOMEBREW_PREFIX}/share/bash-completion/bash_completion"
+  source_if_exists "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+
+  # Autocomplete for aws, brew, git, ...
+  for completion_file in ${HOMEBREW_PREFIX}/etc/bash_completion.d/*; do
     source "${completion_file}"
   done
 
-  # bash-completion@2
-  source_if_exists "$(brew --prefix)/share/bash-completion/bash_completion"
+  # Autocomplete for many shell commands. Since it's slow, let's choose some:
+  cmds="chmod chown crontab curl file find gtar gzip htop jq kill killall man mktemp mysql pkill pwd pytest python rsync scp sh shellcheck ssh sudo tar watch wget"
+  for completion_file in ${cmds}; do
+    source "${HOMEBREW_PREFIX}/share/bash-completion/completions/${completion_file}"
+  done
 
   [[ "${set_e}" = true ]] && set -e
 
