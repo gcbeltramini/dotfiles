@@ -141,11 +141,13 @@ source_if_exists "${GIT_COMPLETION_FILE}"
 if [[ -f "${GIT_COMPLETION_FILE}" ]]; then
   __git_complete ga _git_add
   __git_complete gb _git_branch
+  __git_complete gc _git_commit
   __git_complete gco _git_checkout
   __git_complete gd _git_diff
   __git_complete gf _git_fetch
   __git_complete gm _git_merge
   __git_complete gp _git_pull
+  __git_complete gs _git_status
 fi
 
 
