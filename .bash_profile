@@ -46,6 +46,19 @@ cdf() {
   dir=$(echo "${dirs}" | fzf) && cd "${dir}"
 }
 
+myip() {
+  local interface
+  local internal_ip
+  local external_ip
+
+  interface=$(route get 8.8.8.8 | grep -o 'interface: .*' | cut -d' ' -f2)
+  internal_ip=$(ifconfig ${interface} | grep -o 'inet [0-9\.]*' | cut -d ' ' -f2)
+  external_ip=$(curl -s ipecho.net/plain)
+
+  printf 'Internal IP: %s\n' "${internal_ip}" # only in macOS
+  printf 'External IP: %s\n' "${external_ip}" # or: "curl ifconfig.me"
+}
+
 
 # Initialize
 # ==========
@@ -85,8 +98,6 @@ alias master="gf && gm origin/master"
 alias desktop="cd ${HOME}/Desktop/"
 alias downloads="cd ${HOME}/Downloads/"
 alias nb="jupyter-notebook"
-alias myip-internal="ipconfig getifaddr en0"  # only in macOS
-alias myip-external="curl ipecho.net/plain ; echo"  # or: "curl ifconfig.me"
 alias mybash="subl ${HOME}/.bash_profile"
 alias treeclean="tree -a -I '.idea|target|.git'"
 
