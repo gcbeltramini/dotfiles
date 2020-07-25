@@ -214,6 +214,13 @@ fi
 # -----
 if is_valid_command rbenv; then eval "$(rbenv init -)"; fi
 
+# node
+# ----
+# https://nodejs.org/api/modules.html
+if is_valid_command node && [[ -n "$HOMEBREW_PREFIX" ]]; then
+  export NODE_PATH="${HOMEBREW_PREFIX}/lib/node_modules"
+fi
+
 # Miniconda/Anaconda Python
 # -------------------------
 # >>> conda initialize >>>
