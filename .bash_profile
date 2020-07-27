@@ -51,12 +51,14 @@ myip() {
   local internal_ip
   local external_ip
 
-  interface=$(route get 8.8.8.8 | grep -o 'interface: .*' | cut -d' ' -f2)
+  # Only in macOS
+  interface=$(route get 10.0.0.0 | grep -o 'interface: .*' | cut -d' ' -f2)
   internal_ip=$(ifconfig ${interface} | grep -o 'inet [0-9\.]*' | cut -d ' ' -f2)
-  external_ip=$(curl -s ipecho.net/plain)
 
-  printf 'Internal IP: %s\n' "${internal_ip}" # only in macOS
-  printf 'External IP: %s\n' "${external_ip}" # or: "curl ifconfig.me"
+  external_ip=$(curl -s ipecho.net/plain) # or: "curl ifconfig.me"
+
+  printf 'Internal IP: %s\n' "${internal_ip}"
+  printf 'External IP: %s\n' "${external_ip}"
 }
 
 
