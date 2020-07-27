@@ -25,27 +25,6 @@ is_valid_command() {
   command -v "${1}" > /dev/null
 }
 
-cdf() {
-  # cd into folder using fzf.
-  #
-  # Usage:
-  #   cdf [<maxdepth>]
-  #
-  # Examples:
-  #   cdf
-  #   cdf 3
-  local maxdepth="${1:-0}"
-  local dirs
-  local dir
-  if shopt -q extglob; then
-    # Display also hidden folders.
-    dirs=$(find @(?(.)*!(.)) -maxdepth "${maxdepth}" -type d 2>/dev/null)
-  else
-    dirs=$(find * -maxdepth "${maxdepth}" -type d 2>/dev/null)
-  fi
-  dir=$(echo "${dirs}" | fzf) && cd "${dir}"
-}
-
 myip() {
   local interface
   local internal_ip
@@ -119,6 +98,7 @@ alias rg='ranger --choosedir=${HOME}/.rangerdir; LASTDIR=`cat ${HOME}/.rangerdir
 
 # fzf (https://github.com/junegunn/fzf) - brew install fzf
 # ---
+# Examples: https://github.com/junegunn/fzf/wiki/examples
 source_if_exists "${HOME}/.fzf.bash"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
