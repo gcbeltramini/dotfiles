@@ -257,7 +257,6 @@ if is_valid_command brew; then
 
 fi
 
-source_if_exists "${NUCLI_HOME}/nu.bashcompletion"
 
 
 # Utilities
