@@ -50,6 +50,25 @@ conda-update-all() {
   conda clean --all --yes
 }
 
+npm-update-all() {
+  npm update -g
+}
+
+update-all() {
+  echo "Homebrew"
+  brew-update-all
+  echo "Done!"
+  echo "conda"
+  conda-update-all
+  echo "Done!"
+  echo "n"
+  sudo n latest
+  echo "Done!"
+  echo "npm"
+  npm-update-all
+  echo "Done!"
+}
+
 ll() {
   local path="${1:-$(pwd)}"
   # `ls` must be GNU-ls. In MacOS, `ls` will be `gls`: $ brew install coreutils
