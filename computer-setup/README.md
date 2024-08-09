@@ -29,7 +29,7 @@ Run `macos.sh`
     fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
     ```
 
-4. Add this to the section `User configuration`: `export LESS="FR"`
+4. Add this to the section `User configuration`: `export LESS="FRX"`
 5. Modify the default text editor:
 
     ```shell
