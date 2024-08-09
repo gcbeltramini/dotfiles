@@ -44,14 +44,21 @@ brew install --cask \
 
 brew install \
   awscli \
+  bash \
   bat \
   coreutils \
   fzf \
   gawk \
+  grep \
   gsed \
+  htop \
+  jenv \
   jq \
+  ruff \
   shellcheck \
+  sponge \
   tree \
+  uv \
   wget
 
 # ------------------------------------------------------------
