@@ -21,22 +21,28 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # - IntelliJ CE (https://www.jetbrains.com/idea/)
 # - iTerm2 (https://iterm2.com/)
 # - MeetingBar (https://meetingbar.app/)
+# - Miniforge (https://github.com/conda-forge/miniforge)
 # - PyCharm CE (https://www.jetbrains.com/pycharm/)
 # - Rancher Desktop (https://rancherdesktop.io/)
 # - Rectangle (https://rectangleapp.com/)
+# - Stats (https://github.com/exelban/stats)
 # - Sublime Text (https://www.sublimetext.com/)
-# - VLC (https://www.videolan.org/vlc/)
 # - Visual Studio Code (https://code.visualstudio.com/)
+# - VLC (https://www.videolan.org/vlc/)
+# - Azul Zulu (https://www.azul.com/downloads/#zulu)
 brew install --cask \
   intellij-idea-ce \
   iterm2 \
   meetingbar \
+  miniforge \
   pycharm-ce \
   rancher \
   rectangle \
+  stats \
   sublime-text \
+  visual-studio-code \
   vlc \
-  visual-studio-code
+  zulu@8
 
 # ------------------------------------------------------------
 # Utilities
@@ -47,6 +53,7 @@ brew install \
   bash \
   bat \
   coreutils \
+  findutils \
   fzf \
   gawk \
   grep \
@@ -54,11 +61,14 @@ brew install \
   htop \
   jenv \
   jq \
+  kubectx \
+  kubernetes-cli \
   ruff \
   shellcheck \
   sponge \
   tree \
   uv \
+  watch \
   wget
 
 # ------------------------------------------------------------
