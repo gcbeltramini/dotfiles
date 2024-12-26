@@ -125,3 +125,44 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
 ## Python setup
 
 Run `python_setup.sh`
+
+### Customize Jupyter notebooks
+
+References:
+
+- https://github.com/jupyter/notebook/blob/main/packages/application/style/base.css
+- https://jupyter-notebook.readthedocs.io/en/latest/custom_css.html
+- https://stackoverflow.com/a/76778615
+- https://github.com/jupyter/notebook/discussions/7152
+
+If you want to edit one specific Jupyter notebook, run this:
+
+```python
+from IPython.display import display, HTML
+display(HTML("<style>.jp-Notebook { --jp-notebook-max-width: 95% !important; }</style>"))
+# or: display(HTML("<style>:root { --jp-notebook-max-width: 95% !important; }</style>"))
+```
+
+The usual solution in CSS file `$(jupyter --config-dir)/custom/custom.css` (typically `~/.jupyter/custom/custom.css`) doesn't work anymore:
+
+```css
+.container {
+  width: 95% !important;
+}
+```
+
+Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter notebook is; the `!importan` rule may not be necessary):
+
+```css
+.jp-Notebook {
+  --jp-notebook-max-width: 95% !important;
+}
+
+:root {
+  --jp-notebook-max-width: 95% !important;
+}
+
+:root body[data-notebook='notebooks'] {
+  --jp-notebook-max-width: 95% !important;
+}
+```
