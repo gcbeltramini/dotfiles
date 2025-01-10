@@ -41,6 +41,14 @@ Run `macos.sh`
     fi
     ```
 
+6. Add these lines to the top of the file, where file `update_all.sh` is [this](../.custom/update_all.sh):
+
+    ```shell
+    if [ -f "$HOME"/Documents/update_all.sh ]; then
+      bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
+    fi
+    ```
+
 ## Powerlevel10k configuration
 
 Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font for you. Simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
