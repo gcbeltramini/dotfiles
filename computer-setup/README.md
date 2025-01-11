@@ -15,9 +15,11 @@ Run `macos.sh`
       aws
       colored-man-pages
       conda-zsh-completion
-      F-Sy-H
+      F-Sy-H # fast-syntax-highlighting
       fzf
       git
+      kubectl
+      web-search
       zsh-autosuggestions
       zsh-syntax-highlighting
     )
@@ -47,6 +49,52 @@ Run `macos.sh`
     if [ -f "$HOME"/Documents/update_all.sh ]; then
       bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
     fi
+    ```
+
+7. Add this section:
+
+    ```shell
+    # >>> CUSTOM >>>
+    REPOS_HOME="$HOME/Documents/repos/"
+    repo() {
+      # \`cd\` into repository folder.
+      #
+      # Usage:
+      #   repo [<repo_name>]
+      #
+      # Examples:
+      #   repo
+      #   repo my-project
+      local -r repo=${1:-}
+      cd "${REPOS_HOME}/$repo"
+    }
+
+    _repo_complete() {
+      _path_files -W "$REPOS_HOME" -/  # `-/` ensures only directories are listed
+    }
+
+    # Register the completion
+    compdef _repo_complete repo
+
+    # Ref.: https://www.masterzen.fr/2009/04/19/in-love-with-zsh-part-one/#formatting-completion
+
+    # format all messages not formatted in bold prefixed with ----
+    zstyle ':completion:*' format '%B---- %d%b'
+    # format descriptions (notice the vt100 escapes)
+    zstyle ':completion:*:*:*:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
+    # bold and underline normal messages
+    zstyle ':completion:*:*:*:*:messages' format '%B%U---- %d%u%b'
+    # format in bold red error messages
+    zstyle ':completion:*:*:*:*:warnings' format "%B$fg[red]%}---- no match for: $fg[white]%d%b"
+
+    # let's use the tag name as group name
+    zstyle ':completion:*' group-name ''
+
+    # activate menu selection
+    zstyle ':completion:*' menu select
+
+    # avoid hiding descriptions, enable verbose descriptions
+    zstyle ':completion:*' verbose yes
     ```
 
 ## Powerlevel10k configuration
