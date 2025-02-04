@@ -78,6 +78,16 @@ git config --global fetch.prune true
 git config --global pull.rebase false
 git config --global push.autoSetupRemote true
 git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+# (for 'terraform init')
+git config --global --add includeIf.gitdir:~/repos/open-source/.path ~/.gitconfig-open-source
+# (different settings to separate the open-source and private/professional projects)
+
+cat > ~/.gitconfig-open-source <<EOF
+[user]
+	email = yourusernam@yourdomain.com
+	name = Your Name
+	signingkey = ~/.ssh/id_ed25519.pub
+EOF
 ```
 
 ## GitHub config
