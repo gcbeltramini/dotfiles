@@ -9,49 +9,73 @@ Run `macos.sh`
 1. Set `ZSH_THEME="powerlevel10k/powerlevel10k"`
 2. Add the plugins to the list of plugins for Oh My Zsh to load:
 
-    ```shell
-    plugins=(
-      autoupdate
-      aws
-      colored-man-pages
-      conda-zsh-completion
-      F-Sy-H
-      fzf
-      git
-      zsh-autosuggestions
-      zsh-syntax-highlighting
-    )
-    ```
+     ```shell
+     plugins=(
+       autoupdate
+       aws
+       colored-man-pages
+       conda-zsh-completion
+       F-Sy-H
+       fzf
+       git
+       zsh-autosuggestions
+       zsh-syntax-highlighting
+     )
+     ```
 
 3. Add the following line before `source "$ZSH/oh-my-zsh.sh"`:
 
-    ```shell
-    fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-    ```
+     ```shell
+     fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+     ```
 
 4. Add this to the section `User configuration`: `export LESS="FRX"`
 5. Modify the default text editor:
 
-    ```shell
-    # Preferred editor for local and remote sessions
-    if [[ -n $SSH_CONNECTION ]]; then
-      export EDITOR='vim'
-    else
-      export EDITOR='subl --new-window --wait'
-    fi
-    ```
+     ```shell
+     # Preferred editor for local and remote sessions
+     if [[ -n $SSH_CONNECTION ]]; then
+       export EDITOR='vim'
+     else
+       export EDITOR='subl --new-window --wait'
+     fi
+     ```
 
 6. Add these lines to the top of the file, where file `update_all.sh` is [this](../.custom/update_all.sh):
 
-    ```shell
-    if [ -f "$HOME"/Documents/update_all.sh ]; then
-      bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
-    fi
-    ```
+     ```shell
+     if [ -f "$HOME"/Documents/update_all.sh ]; then
+       bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
+     fi
+     ```
+
+7. Add these lines to the end of `~/.zshrc`:
+
+     ```shell
+     # format all messages not formatted in bold prefixed with ----
+     zstyle ':completion:*' format '%B---- %d%b'
+     # format descriptions (notice the vt100 escapes)
+     zstyle ':completion:*:*:*:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
+     # bold and underline normal messages
+     zstyle ':completion:*:*:*:*:messages' format '%B%U---- %d%u%b'
+     # format in bold red error messages
+     zstyle ':completion:*:*:*:*:warnings' format "%B$fg[red]%}---- no match for: $fg[white]%d%b"
+     # use the tag name as group name
+     zstyle ':completion:*' group-name ''
+     # activate menu selection
+     zstyle ':completion:*' menu select
+     # avoid hiding descriptions, enable verbose descriptions
+     zstyle ':completion:*' verbose yes
+     ```
+
+     This affects the autocompletion of all commands in the terminal.
+
+     Source: <https://www.masterzen.fr/2009/04/19/in-love-with-zsh-part-one/#formatting-completion>
 
 ## Powerlevel10k configuration
 
-Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font for you. Simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
+Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font
+for you. Simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
 
 Suggested answers:
 
@@ -104,7 +128,7 @@ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 pbcopy < ~/.ssh/id_ed25519.pub
 ```
 
-1. Go to https://github.com/settings/ssh/new and choose:
+1. Go to <https://github.com/settings/ssh/new> and choose:
     - `Title`: choose something to identify your computer
     - `Key type`: `Authentication Key`
     - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub` to your clipboard)
@@ -125,7 +149,8 @@ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowedsigners
 Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-file#installation>:
 
 1. In the terminal: `mkdir -p "$HOME/Library/Application Support/Sublime Text/Packages/Dictionaries"`
-2. Choose the dictionaries from <https://github.com/titoBouzout/Dictionaries> and download the 3 files related to the desired language (extensions AFF, DIC, TXT).
+2. Choose the dictionaries from <https://github.com/titoBouzout/Dictionaries> and download the 3 files related to the
+   desired language (extensions AFF, DIC, TXT).
 3. Move these 3 files into the folder above (there can't be any subfolder)
 4. Enable spell checking: in Sublime --> menu `View` --> `Spell Check` (shortcut: F6)
 5. Choose a dictionary: in Sublime --> menu `View` --> `Dictionary` --> `Dictionaries`
@@ -138,10 +163,10 @@ Run `python_setup.sh`
 
 References:
 
-- https://github.com/jupyter/notebook/blob/main/packages/application/style/base.css
-- https://jupyter-notebook.readthedocs.io/en/latest/custom_css.html
-- https://stackoverflow.com/a/76778615
-- https://github.com/jupyter/notebook/discussions/7152
+- <https://github.com/jupyter/notebook/blob/main/packages/application/style/base.css>
+- <https://jupyter-notebook.readthedocs.io/en/latest/custom_css.html>
+- <https://stackoverflow.com/a/76778615>
+- <https://github.com/jupyter/notebook/discussions/7152>
 
 If you want to edit one specific Jupyter notebook, run this:
 
@@ -151,7 +176,8 @@ display(HTML("<style>.jp-Notebook { --jp-notebook-max-width: 95% !important; }</
 # or: display(HTML("<style>:root { --jp-notebook-max-width: 95% !important; }</style>"))
 ```
 
-The usual solution in CSS file `$(jupyter --config-dir)/custom/custom.css` (typically `~/.jupyter/custom/custom.css`) doesn't work anymore:
+The usual solution in CSS file `$(jupyter --config-dir)/custom/custom.css` (typically `~/.jupyter/custom/custom.css`)
+doesn't work anymore:
 
 ```css
 .container {
@@ -159,7 +185,8 @@ The usual solution in CSS file `$(jupyter --config-dir)/custom/custom.css` (typi
 }
 ```
 
-Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter notebook is; the `!importan` rule may not be necessary):
+Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter notebook is; the
+`!important` rule may not be necessary):
 
 ```css
 .jp-Notebook {
