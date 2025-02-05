@@ -15,9 +15,11 @@ Run `macos.sh`
        aws
        colored-man-pages
        conda-zsh-completion
-       F-Sy-H
+       F-Sy-H # fast-syntax-highlighting
        fzf
        git
+       kubectl
+       web-search
        zsh-autosuggestions
        zsh-syntax-highlighting
      )
@@ -72,6 +74,52 @@ Run `macos.sh`
 
      Source: <https://www.masterzen.fr/2009/04/19/in-love-with-zsh-part-one/#formatting-completion>
 
+7. Add this section:
+
+    ```shell
+    # >>> CUSTOM >>>
+    REPOS_HOME="$HOME/Documents/repos/"
+    repo() {
+      # \`cd\` into repository folder.
+      #
+      # Usage:
+      #   repo [<repo_name>]
+      #
+      # Examples:
+      #   repo
+      #   repo my-project
+      local -r repo=${1:-}
+      cd "${REPOS_HOME}/$repo"
+    }
+
+    _repo_complete() {
+      _path_files -W "$REPOS_HOME" -/  # `-/` ensures only directories are listed
+    }
+
+    # Register the completion
+    compdef _repo_complete repo
+
+    # Ref.: https://www.masterzen.fr/2009/04/19/in-love-with-zsh-part-one/#formatting-completion
+
+    # format all messages not formatted in bold prefixed with ----
+    zstyle ':completion:*' format '%B---- %d%b'
+    # format descriptions (notice the vt100 escapes)
+    zstyle ':completion:*:*:*:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
+    # bold and underline normal messages
+    zstyle ':completion:*:*:*:*:messages' format '%B%U---- %d%u%b'
+    # format in bold red error messages
+    zstyle ':completion:*:*:*:*:warnings' format "%B$fg[red]%}---- no match for: $fg[white]%d%b"
+
+    # let's use the tag name as group name
+    zstyle ':completion:*' group-name ''
+
+    # activate menu selection
+    zstyle ':completion:*' menu select
+
+    # avoid hiding descriptions, enable verbose descriptions
+    zstyle ':completion:*' verbose yes
+    ```
+
 ## Powerlevel10k configuration
 
 Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font
@@ -102,6 +150,16 @@ git config --global fetch.prune true
 git config --global pull.rebase false
 git config --global push.autoSetupRemote true
 git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
+# (for 'terraform init')
+git config --global --add includeIf.gitdir:~/repos/open-source/.path ~/.gitconfig-open-source
+# (different settings to separate the open-source and private/professional projects)
+
+cat > ~/.gitconfig-open-source <<EOF
+[user]
+	email = yourusernam@yourdomain.com
+	name = Your Name
+	signingkey = ~/.ssh/id_ed25519.pub
+EOF
 ```
 
 ## GitHub config
