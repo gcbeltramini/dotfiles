@@ -24,4 +24,21 @@ fi
 
 bash "${HOME}/Downloads/${miniforge_fname}" -bu
 "${HOME}/miniforge3/condabin/conda" init zsh
+"${HOME}/miniforge3/condabin/conda" update -yn base conda
 "${HOME}/miniforge3/condabin/conda" update -yn base --all
+"${HOME}/miniforge3/condabin/conda" install -yn base \
+  boto3 \
+  jupyter \
+  jupyterlab \
+  jupyterlab_execute_time \
+  matplotlib \
+  nb_conda_kernels \
+  notebook \
+  pandas \
+  pip \
+  pytest \
+  pytest-xdist \
+  seaborn \
+  tabulate \
+  toolz
+"${HOME}/miniforge3/condabin/conda" config --add create_default_packages ipykernel
