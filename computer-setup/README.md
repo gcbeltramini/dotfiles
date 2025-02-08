@@ -19,6 +19,7 @@ Run `macos.sh`
        fzf
        git
        kubectl
+       terraform
        web-search
        zsh-autosuggestions
        zsh-syntax-highlighting
