@@ -178,7 +178,7 @@ git config --global gpg.format ssh
 git config --global commit.gpgsign true
 git config --global user.signingkey ~/.ssh/id_ed25519.pub
 echo "$(git config --global user.email) $(cat ~/.ssh/id_ed25519.pub)" > ~/.ssh/allowed_signers
-git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowedsigners
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 ```
 
 ## Sublime Text
