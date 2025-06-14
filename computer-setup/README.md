@@ -194,6 +194,10 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
 4. Enable spell checking: in Sublime --> menu `View` --> `Spell Check` (shortcut: F6)
 5. Choose a dictionary: in Sublime --> menu `View` --> `Dictionary` --> `Dictionaries`
 
+## Java setup
+
+Run `java_setup.sh`
+
 ## Python setup
 
 Run `python_setup.sh`
