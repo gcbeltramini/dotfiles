@@ -1,5 +1,17 @@
 # Setup steps
 
+- [Setup steps](#setup-steps)
+  - [macOS setup](#macos-setup)
+  - [In file `~/.zshrc`](#in-file-zshrc)
+  - [Powerlevel10k configuration](#powerlevel10k-configuration)
+  - [Git config](#git-config)
+  - [GitHub config](#github-config)
+  - [Sublime Text](#sublime-text)
+    - [Install additional dictionaries](#install-additional-dictionaries)
+  - [Visual Studio Code](#visual-studio-code)
+  - [Python setup](#python-setup)
+    - [Customize Jupyter notebooks](#customize-jupyter-notebooks)
+
 ## macOS setup
 
 Run `macos.sh`
@@ -193,6 +205,203 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
 3. Move these 3 files into the folder above (there can't be any subfolder)
 4. Enable spell checking: in Sublime --> menu `View` --> `Spell Check` (shortcut: F6)
 5. Choose a dictionary: in Sublime --> menu `View` --> `Dictionary` --> `Dictionaries`
+
+## Visual Studio Code
+
+1. Run the following script to install the VS Code extensions:
+
+    ```shell
+    while read -r extension; do
+      [[ -z "$extension" || "$extension" =~ ^# ]] && continue # Skip empty lines and comments
+      code --install-extension "$extension"
+    done <<'EOF'
+    aaron-bond.better-comments
+    amazonwebservices.aws-toolkit-vscode
+    charliermarsh.ruff
+    davidanson.vscode-markdownlint
+    eamodio.gitlens
+    exiasr.hadolint
+    foxundermoon.shell-format
+    github.copilot
+    github.copilot-chat
+    gruntfuggly.todo-tree
+    hashicorp.terraform
+    johnpapa.vscode-peacock
+    mkhl.shfmt
+    ms-azuretools.vscode-docker
+    ms-python.debugpy
+    ms-python.python
+    ms-python.vscode-pylance
+    ms-python.vscode-python-envs
+    ms-toolsai.jupyter
+    ms-toolsai.jupyter-keymap
+    ms-toolsai.jupyter-renderers
+    ms-toolsai.vscode-jupyter-cell-tags
+    ms-toolsai.vscode-jupyter-slideshow
+    ms-vscode-remote.remote-ssh
+    ms-vscode-remote.remote-ssh-edit
+    ms-vscode.makefile-tools
+    ms-vscode.remote-explorer
+    njpwerner.autodocstring
+    oderwat.indent-rainbow
+    redhat.vscode-yaml
+    streetsidesoftware.code-spell-checker
+    tamasfe.even-better-toml
+    timonwong.shellcheck
+    yzhang.markdown-all-in-one
+    EOF
+    ```
+
+2. Run Cmd+Shift+P and type `Preferences: Open User Settings (JSON)`:
+
+```json
+{
+    // Files
+    // ---------------------------------------------------------------------------------------------
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    // Editor
+    // ---------------------------------------------------------------------------------------------
+    "editor.rulers": [
+        100,
+        120
+    ],
+    "editor.renderWhitespace": "all",
+    // Terminal
+    // ---------------------------------------------------------------------------------------------
+    "terminal.integrated.env.osx": {
+        "PATH": "${env:PATH}"
+    },
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.suggest.enabled": false,
+    // VS Code settings
+    // ---------------------------------------------------------------------------------------------
+    "files.autoSave": "onFocusChange",
+    "window.openFoldersInNewWindow": "on",
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.sideBar.location": "right",
+    "workbench.startupEditor": "none",
+    // Languages
+    // ---------------------------------------------------------------------------------------------
+    "[github-actions-workflow]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "[python]": {
+        // https://github.com/astral-sh/ruff-vscode/tree/main
+        "editor.defaultFormatter": "charliermarsh.ruff",
+    },
+    "autoDocstring.docstringFormat": "numpy",
+    // Required extensions to format shell files: 'shell-format', 'shfmt'
+    "shfmt.executableArgs": [
+        "-i",
+        "2"
+    ], // indent with 2 spaces, otherwise 'shfmt' will use tabs
+    "[shellscript]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false, // to make sure that "editor.insertSpaces" and "editor.tabSize" are used
+    },
+    "[terraform]": {
+        "editor.defaultFormatter": "hashicorp.terraform",
+    },
+    "[terraform-vars]": {
+        "editor.defaultFormatter": "hashicorp.terraform",
+    },
+    // Python linter
+    // ---------------------------------------------------------------------------------------------
+    "ruff.configuration": {
+        "format": {
+            "quote-style": "preserve"
+        },
+        "lint": {
+            "per-file-ignores": {
+                "__init__.py": [
+                    "F401",
+                    "F403"
+                ]
+            }
+        }
+    },
+    "ruff.lineLength": 120,
+    "ruff.lint.ignore": [
+        "AIR001",
+        "AIR31",
+        "B905",
+        "E731",
+        "FIX0",
+        "PLC0415",
+        "S311",
+        "TD002",
+        "TD003",
+        "TID252",
+    ],
+    "ruff.lint.select": [
+        "A003",
+        "AIR",
+        "B03",
+        "B9",
+        "D3",
+        "DJ",
+        "E",
+        "EXE",
+        "F",
+        "FIX",
+        "FLY",
+        "FURB",
+        "I",
+        "ICN",
+        "INT",
+        "ISC",
+        "LOG",
+        "N81",
+        "N9",
+        "PIE7",
+        "PLC",
+        "PLE",
+        "PT02",
+        "PYI",
+        "RSE",
+        "RUF1",
+        "RUF2",
+        "S2",
+        "S3",
+        "S5",
+        "S7",
+        "SIM2",
+        "SIM3",
+        "SIM4",
+        "SIM9",
+        "SLOT",
+        "T10",
+        "TCH",
+        "TD",
+        "TID",
+        "UP01",
+        "UP02",
+        "UP034",
+        "UP04",
+        "W",
+        "YTT",
+    ],
+    // Remote - SSH
+    // ---------------------------------------------------------------------------------------------
+    "aws.telemetry": false,
+    "remote.SSH.connectTimeout": 120,
+    "remote.SSH.defaultExtensions": [
+        "amazonwebservices.aws-toolkit-vscode"
+    ],
+   // Spelling
+   // ---------------------------------------------------------------------------------------------
+   "cSpell.userWords": [
+       "dataframe",
+       "venv",
+   ],
+}
+```
 
 ## Python setup
 
