@@ -395,12 +395,12 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
     "remote.SSH.defaultExtensions": [
         "amazonwebservices.aws-toolkit-vscode"
     ],
-   // Spelling
-   // ---------------------------------------------------------------------------------------------
-   "cSpell.userWords": [
-       "dataframe",
-       "venv",
-   ],
+    // Spelling
+    // ---------------------------------------------------------------------------------------------
+    "cSpell.userWords": [
+        "dataframe",
+        "venv",
+    ],
 }
 ```
 
