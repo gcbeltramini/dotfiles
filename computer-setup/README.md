@@ -399,7 +399,7 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
     // ---------------------------------------------------------------------------------------------
     "cSpell.userWords": [
         "dataframe",
-        "venv",
+        "venv"
     ],
 }
 ```
