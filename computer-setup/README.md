@@ -9,6 +9,7 @@
   - [Sublime Text](#sublime-text)
     - [Install additional dictionaries](#install-additional-dictionaries)
   - [Visual Studio Code](#visual-studio-code)
+  - [Java setup](#java-setup)
   - [Python setup](#python-setup)
     - [Customize Jupyter notebooks](#customize-jupyter-notebooks)
 
@@ -190,7 +191,7 @@ git config --global gpg.format ssh
 git config --global commit.gpgsign true
 git config --global user.signingkey ~/.ssh/id_ed25519.pub
 echo "$(git config --global user.email) $(cat ~/.ssh/id_ed25519.pub)" > ~/.ssh/allowed_signers
-git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowedsigners
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 ```
 
 ## Sublime Text
@@ -402,6 +403,10 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
    ],
 }
 ```
+
+## Java setup
+
+Run `java_setup.sh`
 
 ## Python setup
 
