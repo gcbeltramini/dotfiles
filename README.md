@@ -6,6 +6,6 @@ My home directory dotfiles and setup scripts.
 
 - docopts:
 
-    ```
+    ```shell
     python -m pip install docopts
     ```

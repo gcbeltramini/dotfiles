@@ -6,11 +6,11 @@ set -euo pipefail
 version=21 # 8, 11, 17, 21, "latest"
 
 new_section() {
-    local -r text=$1
-    local -r blue='\x1b[34m'
-    local -r no_color='\x1b[0m'
+  local -r text=$1
+  local -r blue='\x1b[34m'
+  local -r no_color='\x1b[0m'
 
-    echo -e "\n${blue}${text}${no_color}"
+  echo -e "\n${blue}${text}${no_color}"
 }
 
 new_section "Install 'jenv' and Azul Zulu version $version"
