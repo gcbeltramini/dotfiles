@@ -18,7 +18,6 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # ------------------------------------------------------------
 
 # Install cask apps:
-# - IntelliJ CE (https://www.jetbrains.com/idea/)
 # - iTerm2 (https://iterm2.com/)
 # - MeetingBar (https://meetingbar.app/)
 # - Miniforge (https://github.com/conda-forge/miniforge)
@@ -31,11 +30,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # - VLC (https://www.videolan.org/vlc/)
 # - Azul Zulu (https://www.azul.com/downloads/#zulu)
 brew install --cask \
-  intellij-idea-ce \
   iterm2 \
   meetingbar \
   miniforge \
-  pycharm-ce \
   rancher \
   rectangle \
   stats \
