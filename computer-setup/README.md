@@ -57,7 +57,7 @@ Run `macos.sh`
      fi
      ```
 
-6. Add these lines to the top of the file, where file `update_all.sh` is [this](../.custom/update_all.sh):
+6. Add these lines to the top of the file, where file [`update_all.sh`](../.custom/update_all.sh) is:
 
      ```shell
      if [ -f "$HOME"/Documents/update_all.sh ]; then
@@ -117,7 +117,7 @@ Run `macos.sh`
 ## Powerlevel10k configuration
 
 Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font
-for you. Simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
+for you; simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
 
 Suggested answers:
 
@@ -138,7 +138,7 @@ Suggested answers:
 ## Git config
 
 ```shell
-git config --global user.email "yourusernam@yourdomain.com"
+git config --global user.email "yourusername@yourdomain.com"
 git config --global user.name "Your Name"
 git config --global fetch.prune true
 git config --global pull.rebase false

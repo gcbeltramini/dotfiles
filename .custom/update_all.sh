@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Script to weekly update all 'brew' and 'conda' packages.
 
-LAST_RUN_FILE="$HOME/.last_command_run_date"
+LAST_RUN_FILE="$HOME/.update_all_last_command_run_date"
 CURRENT_WEEK=$(date +%Y-%V) # current year and week number in YYYY-WW format
 
 if [ -f "$LAST_RUN_FILE" ]; then
