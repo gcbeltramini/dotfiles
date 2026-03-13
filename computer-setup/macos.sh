@@ -21,7 +21,6 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # - iTerm2 (https://iterm2.com/)
 # - MeetingBar (https://meetingbar.app/)
 # - Miniforge (https://github.com/conda-forge/miniforge)
-# - PyCharm CE (https://www.jetbrains.com/pycharm/)
 # - Rancher Desktop (https://rancherdesktop.io/)
 # - Rectangle (https://rectangleapp.com/)
 # - Stats (https://github.com/exelban/stats)
@@ -39,7 +38,7 @@ brew install --cask \
   sublime-text \
   visual-studio-code \
   vlc \
-  zulu@8
+  zulu@21
 
 # ------------------------------------------------------------
 # Utilities

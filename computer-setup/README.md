@@ -15,7 +15,19 @@
 
 ## macOS setup
 
-Run `macos.sh`
+1. Run `macos.sh`
+2. Open the following apps, and configure them to open at login:
+    - [MeetingBar](https://meetingbar.app/)
+    - [Rectangle](https://rectangleapp.com/)
+    - [Stats](https://github.com/exelban/stats)
+
+## iTerm configuration
+
+1. Enable word jumping when pressing `⌥` + left/right arrow:
+    1. `Settings` > `Profiles` > `Keys` > `Key Bindings` > `+`:
+        - `Keyboard Shortcut`: `⌥` + left arrow
+        - `Action`: `Send Keystrokes` > `Send Escape Sequence` > `Esc+ b`
+        - Repeat for `⌥` + right arrow, with `Esc+ f`
 
 ## In file `~/.zshrc`
 
@@ -116,8 +128,8 @@ Run `macos.sh`
 
 ## Powerlevel10k configuration
 
-Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font
-for you; simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
+Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the
+recommended font; simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
 
 Suggested answers:
 
@@ -183,7 +195,8 @@ pbcopy < ~/.ssh/id_ed25519.pub
 1. Go to <https://github.com/settings/ssh/new> and choose:
     - `Title`: choose something to identify your computer
     - `Key type`: `Authentication Key`
-    - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub` to your clipboard)
+    - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub`
+    to your clipboard)
 2. Repeat the process, but now with `Key type` = `Signing Key`
 
 ```shell
@@ -200,9 +213,9 @@ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 
 Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-file#installation>:
 
-1. In the terminal: `mkdir -p "$HOME/Library/Application Support/Sublime Text/Packages/Dictionaries"`
-2. Choose the dictionaries from <https://github.com/titoBouzout/Dictionaries> and download the 3 files related to the
-   desired language (extensions AFF, DIC, TXT).
+1. In the terminal, run: `mkdir -p "$HOME/Library/Application Support/Sublime Text/Packages/Dictionaries"`
+2. Choose the dictionaries from <https://github.com/titoBouzout/Dictionaries> and download the 3
+   files related to the desired language (extensions AFF, DIC, TXT).
 3. Move these 3 files into the folder above (there can't be any subfolder)
 4. Enable spell checking: in Sublime --> menu `View` --> `Spell Check` (shortcut: F6)
 5. Choose a dictionary: in Sublime --> menu `View` --> `Dictionary` --> `Dictionaries`
@@ -217,17 +230,14 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
       code --install-extension "$extension"
     done <<'EOF'
     aaron-bond.better-comments
-    amazonwebservices.aws-toolkit-vscode
     charliermarsh.ruff
     davidanson.vscode-markdownlint
     eamodio.gitlens
     exiasr.hadolint
     foxundermoon.shell-format
-    github.copilot
     github.copilot-chat
     gruntfuggly.todo-tree
     hashicorp.terraform
-    johnpapa.vscode-peacock
     mkhl.shfmt
     ms-azuretools.vscode-docker
     ms-python.debugpy
@@ -239,10 +249,7 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
     ms-toolsai.jupyter-renderers
     ms-toolsai.vscode-jupyter-cell-tags
     ms-toolsai.vscode-jupyter-slideshow
-    ms-vscode-remote.remote-ssh
-    ms-vscode-remote.remote-ssh-edit
     ms-vscode.makefile-tools
-    ms-vscode.remote-explorer
     njpwerner.autodocstring
     oderwat.indent-rainbow
     redhat.vscode-yaml
@@ -252,6 +259,12 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
     yzhang.markdown-all-in-one
     EOF
     ```
+
+    The following extensions are necessary to [set up local Visual Studio Code with AWS SageMaker](https://docs.aws.amazon.com/sagemaker/latest/dg/remote-access-local-ide-setup.html):
+    - `amazonwebservices.aws-toolkit-vscode`
+    - `ms-vscode-remote.remote-ssh`
+    - `ms-vscode-remote.remote-ssh-edit`
+    - `ms-vscode.remote-explorer`
 
 2. Run Cmd+Shift+P and type `Preferences: Open User Settings (JSON)`:
 
@@ -410,9 +423,31 @@ Run `java_setup.sh`
 
 ## Python setup
 
-Run `python_setup.sh`
+1. Run: `conda init zsh`
+2. Open a new terminal, and run:
+
+    ```shell
+    conda update -yn base conda
+    conda update -yn base --all
+    conda config --add create_default_packages ipykernel
+    conda install -yn base \
+      boto3 \
+      jupyterlab \
+      jupyterlab_execute_time \
+      matplotlib \
+      nb_conda_kernels \
+      pandas \
+      pipdeptree \
+      pytest \
+      pytest-xdist \
+      seaborn \
+      tabulate \
+      toolz
+    ```
 
 ### Customize Jupyter notebooks
+
+This is not necessary for JupyterLab notebooks.
 
 References:
 

@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Set up Java on your computer: install 'jenv' and Azul Zulu Java (works in architectures x86_64 and arm64).
 
-version=17 # 8, 11, 17, 21, "latest"
+version=21 # 8, 11, 17, 21, "latest"
 
 new_section() {
     local -r text=$1
