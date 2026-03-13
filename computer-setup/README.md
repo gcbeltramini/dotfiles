@@ -138,7 +138,7 @@ Suggested answers:
 ## Git config
 
 ```shell
-git config --global user.email "yourusername@yourdomain.com"
+git config --global user.email "your_username@yourdomain.com"
 git config --global user.name "Your Name"
 git config --global fetch.prune true
 git config --global pull.rebase false
@@ -150,7 +150,7 @@ git config --global --add includeIf.gitdir:~/repos/open-source/.path ~/.gitconfi
 
 cat > ~/.gitconfig-open-source <<EOF
 [user]
-	email = yourusernam@yourdomain.com
+	email = your_username@yourdomain.com
 	name = Your Name
 	signingkey = ~/.ssh/id_ed25519.pub
 EOF
@@ -164,7 +164,7 @@ References:
 - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account#adding-a-new-ssh-key-to-your-account>
 
 ```shell
-ssh-keygen -t ed25519 -C "yourusernam@yourdomain.com"
+ssh-keygen -t ed25519 -C "your_username@yourdomain.com"
 # When asked to enter a passphrase, only type enter, i.e., leave it empty.
 eval "$(ssh-agent -s)"
 
