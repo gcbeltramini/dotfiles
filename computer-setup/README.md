@@ -2,10 +2,11 @@
 
 - [Setup steps](#setup-steps)
   - [macOS setup](#macos-setup)
+  - [iTerm configuration](#iterm-configuration)
   - [In file `~/.zshrc`](#in-file-zshrc)
   - [Powerlevel10k configuration](#powerlevel10k-configuration)
-  - [Git config](#git-config)
-  - [GitHub config](#github-config)
+  - [Git configuration](#git-configuration)
+  - [GitHub configuration](#github-configuration)
   - [Sublime Text](#sublime-text)
     - [Install additional dictionaries](#install-additional-dictionaries)
   - [Visual Studio Code](#visual-studio-code)
@@ -128,11 +129,12 @@
 
 ## Powerlevel10k configuration
 
-Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the
-recommended font; simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
+Open a new terminal (or run `p10k configure`).
 
 Suggested answers:
 
+- In iTerm2 or Termux, `p10k configure` can install the recommended font; simply answer "Yes" when
+  asked whether to install `Meslo Nerd Font`
 - `Prompt Style`: Lean
 - `Character Set`: Unicode
 - `Prompt Colors`: 256 colors
@@ -147,7 +149,7 @@ Suggested answers:
 - `Enable Transient Prompt?`: No
 - `Instant Prompt Mode`: Verbose (recommended)
 
-## Git config
+## Git configuration
 
 ```shell
 git config --global user.email "your_username@yourdomain.com"
@@ -162,50 +164,53 @@ git config --global --add includeIf.gitdir:~/repos/open-source/.path ~/.gitconfi
 
 cat > ~/.gitconfig-open-source <<EOF
 [user]
-	email = your_username@yourdomain.com
-	name = Your Name
-	signingkey = ~/.ssh/id_ed25519.pub
+ email = your_username@yourdomain.com
+ name = Your Name
+ signingkey = ~/.ssh/id_ed25519.pub
 EOF
 ```
 
-## GitHub config
+## GitHub configuration
 
 References:
 
 - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>
 - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account#adding-a-new-ssh-key-to-your-account>
 
-```shell
-ssh-keygen -t ed25519 -C "your_username@yourdomain.com"
-# When asked to enter a passphrase, only type enter, i.e., leave it empty.
-eval "$(ssh-agent -s)"
+1. Run in the terminal:
 
-echo "Host github.com
-  IgnoreUnknown UseKeychain
-  AddKeysToAgent yes
-  UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
-" >> ~/.ssh/config
+    ```shell
+    ssh-keygen -t ed25519 -C "your_username@yourdomain.com"
+    # When asked to enter a passphrase, only type enter, i.e., leave it empty.
+    eval "$(ssh-agent -s)"
 
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    echo "Host github.com
+    IgnoreUnknown UseKeychain
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+    " >> ~/.ssh/config
 
-pbcopy < ~/.ssh/id_ed25519.pub
-```
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 
-1. Go to <https://github.com/settings/ssh/new> and choose:
+    pbcopy < ~/.ssh/id_ed25519.pub
+    ```
+
+2. Go to <https://github.com/settings/ssh/new> and choose:
     - `Title`: choose something to identify your computer
     - `Key type`: `Authentication Key`
     - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub`
     to your clipboard)
-2. Repeat the process, but now with `Key type` = `Signing Key`
+3. Repeat the process, but now with `Key type` = `Signing Key`
+4. Run in the terminal:
 
-```shell
-git config --global gpg.format ssh
-git config --global commit.gpgsign true
-git config --global user.signingkey ~/.ssh/id_ed25519.pub
-echo "$(git config --global user.email) $(cat ~/.ssh/id_ed25519.pub)" > ~/.ssh/allowed_signers
-git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
-```
+    ```shell
+    git config --global gpg.format ssh
+    git config --global commit.gpgsign true
+    git config --global user.signingkey ~/.ssh/id_ed25519.pub
+    echo "$(git config --global user.email) $(cat ~/.ssh/id_ed25519.pub)" > ~/.ssh/allowed_signers
+    git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+    ```
 
 ## Sublime Text
 
@@ -473,8 +478,8 @@ doesn't work anymore:
 }
 ```
 
-Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter notebook is; the
-`!important` rule may not be necessary):
+Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter
+notebook is; the `!important` rule may not be necessary):
 
 ```css
 .jp-Notebook {
