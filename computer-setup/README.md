@@ -69,7 +69,7 @@
      fi
      ```
 
-6. Add these lines to the top of the file, where file [`update_all.sh`](../.custom/update_all.sh) is:
+6. Add these lines to the top of the file, where file [`update_all.sh`](../custom-scripts/update_all.sh) is:
 
      ```shell
      if [ -f "$HOME"/Documents/update_all.sh ]; then
