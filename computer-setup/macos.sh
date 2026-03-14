@@ -64,6 +64,7 @@ brew install \
   kubernetes-cli \
   ruff \
   shellcheck \
+  shfmt \
   sponge \
   tree \
   uv \
