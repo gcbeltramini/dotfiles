@@ -22,7 +22,7 @@ color_section=$color_yellow
 if [ "$CURRENT_WEEK" != "$LAST_RUN_WEEK" ]; then
   echo "Current week = $CURRENT_WEEK"
   echo
-  echo -e "${color_section}Update all Homebrew packages"
+  echo -e "${color_section}Update all Homebrew packages${no_color}"
   brew update
   brew upgrade
   brew cleanup -s
