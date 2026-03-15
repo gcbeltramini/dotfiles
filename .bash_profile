@@ -141,7 +141,7 @@ fi
 
 # Utilities
 # =========
-CUSTOM_PATH="$(dirname ${BASH_SOURCE[0]})/custom-scripts"
+CUSTOM_PATH="$(dirname -- "${BASH_SOURCE[0]}")/custom-scripts"
 source_if_exists "${CUSTOM_PATH}/utils"
 export PATH="${CUSTOM_PATH}:${PATH}"
 
