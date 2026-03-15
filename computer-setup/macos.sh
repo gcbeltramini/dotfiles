@@ -9,7 +9,10 @@ set -euo pipefail
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
+(
+  echo
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+) >>"$HOME/.zprofile"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -18,11 +21,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # ------------------------------------------------------------
 
 # Install cask apps:
-# - IntelliJ CE (https://www.jetbrains.com/idea/)
 # - iTerm2 (https://iterm2.com/)
 # - MeetingBar (https://meetingbar.app/)
 # - Miniforge (https://github.com/conda-forge/miniforge)
-# - PyCharm CE (https://www.jetbrains.com/pycharm/)
 # - Rancher Desktop (https://rancherdesktop.io/)
 # - Rectangle (https://rectangleapp.com/)
 # - Stats (https://github.com/exelban/stats)
@@ -31,18 +32,16 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # - VLC (https://www.videolan.org/vlc/)
 # - Azul Zulu (https://www.azul.com/downloads/#zulu)
 brew install --cask \
-  intellij-idea-ce \
   iterm2 \
   meetingbar \
   miniforge \
-  pycharm-ce \
   rancher \
   rectangle \
   stats \
   sublime-text \
   visual-studio-code \
   vlc \
-  zulu@8
+  zulu@21
 
 # ------------------------------------------------------------
 # Utilities
@@ -65,6 +64,7 @@ brew install \
   kubernetes-cli \
   ruff \
   shellcheck \
+  shfmt \
   sponge \
   tree \
   uv \

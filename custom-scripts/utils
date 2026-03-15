@@ -18,7 +18,6 @@ conda-update-all() {
   conda clean --all --yes
 }
 
-
 update-all() {
   echo "Homebrew"
   brew-update-all
@@ -27,7 +26,6 @@ update-all() {
   conda-update-all
   echo "Done!"
 }
-
 
 lsfiles() {
   local path="${1:-$(pwd)}"
@@ -39,57 +37,56 @@ lsdir() {
   ls -l "${path}" | grep '^d' --color=never
 }
 
-
 llfull() {
   # `ls` with some information and header
   local path="${1:-$(pwd)}"
 
-  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" \
-    | sed 1d \
-    | awk -v OFS='\t' 'BEGIN {print "PERMISSION\tLINKS\tOWNER\tGROUP\tSIZE\tDATE\tHH:MM:SS\tTZ\tNAME\n";}
-                       {s=""; for (i=9; i<=NF; i++) s=s$i" "; print $1,$2,$3,$4,$5,$6,$7,$8,s;}' \
-    | column -t -s $'\t'
+  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" |
+    sed 1d |
+    awk -v OFS='\t' 'BEGIN {print "PERMISSION\tLINKS\tOWNER\tGROUP\tSIZE\tDATE\tHH:MM:SS\tTZ\tNAME\n";}
+                       {s=""; for (i=9; i<=NF; i++) s=s$i" "; print $1,$2,$3,$4,$5,$6,$7,$8,s;}' |
+    column -t -s $'\t'
 }
 
 llpart() {
   # Similar to `llfull` but with less columns
   local path="${1:-$(pwd)}"
-  
-  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" \
-    | sed 1d \
-    | awk -v OFS='\t' 'BEGIN {print "SIZE\tDATE\tHH:MM:SS\tTZ\tNAME\n";}
-                       {s=""; for (i=9; i<=NF; i++) s=s$i" "; print $5,$6,$7,$8,s;}' \
-    | column -t -s $'\t'
+
+  gls -lAhF --time-style='+%Y-%m-%d %H:%M:%S %z' "${path}" |
+    sed 1d |
+    awk -v OFS='\t' 'BEGIN {print "SIZE\tDATE\tHH:MM:SS\tTZ\tNAME\n";}
+                       {s=""; for (i=9; i<=NF; i++) s=s$i" "; print $5,$6,$7,$8,s;}' |
+    column -t -s $'\t'
 }
 
 file_time() {
   # Display file creation, modification, change and access times
-  
-  (printf 'CREATED\tMODIFIED\tCHANGED\tACCESSED\tSIZE\tNAME\n' \
-     && stat -f '%SB%t%Sm%t%Sc%t%Sa%t%z%t%N' -t '%Y-%m-%d %H:%M:%S' *) \
-    | column -t -s $'\t'
+
+  (printf 'CREATED\tMODIFIED\tCHANGED\tACCESSED\tSIZE\tNAME\n' &&
+    stat -f '%SB%t%Sm%t%Sc%t%Sa%t%z%t%N' -t '%Y-%m-%d %H:%M:%S' *) |
+    column -t -s $'\t'
 }
 
 count_ext() {
   # Count the number of files with each extension
   # Ignore hidden files
-  
-  find . -maxdepth 1 -type f -not -path '*/\.*' \
-    | sed -n 's/..*\.//p' \
-    | sort | uniq -c \
-    | awk 'BEGIN {print "EXTENSION\tCOUNT";} {print $2"\t"$1}' \
-    | column -t -s $'\t'
+
+  find . -maxdepth 1 -type f -not -path '*/\.*' |
+    sed -n 's/..*\.//p' |
+    sort | uniq -c |
+    awk 'BEGIN {print "EXTENSION\tCOUNT";} {print $2"\t"$1}' |
+    column -t -s $'\t'
 }
 
 ipynb_cleanmetadata() {
   # Clean all metadata from jupyter notebook files
-  # 
+  #
   # Usage
   # -----
   # ipynb_cleanmetadata my-notebook.ipynb
-  
+
   tmpfile=$(mktemp)
-  jq --indent 1 '.cells[].metadata = {}' "$1" > ${tmpfile}
+  jq --indent 1 '.cells[].metadata = {}' "$1" >${tmpfile}
   mv ${tmpfile} "$1"
 }
 
@@ -97,37 +94,37 @@ files_not_ending_with_newline() {
   # List files that do not end with a newline.
   # Ignore folders: .git, .idea
   # Ignore extensions: pyc
-  # 
+  #
   # Usage:
   #   files_not_ending_with_newline  # look at the current folder
   #   files_not_ending_with_newline path/to/folder
-  # 
+  #
   # References:
   # - Based on: https://stackoverflow.com/a/25686825/7649076
   # - "Why should text files end with a newline?":
   #   https://stackoverflow.com/questions/729692/why-should-text-files-end-with-a-newline
-  
+
   echo "No newline at the end of:"
   find "${1:-.}" \
     -type f \
     -not -name '*.pyc' \
     -not -path '*/.git/*' \
     -not -path '*/.idea/*' \
-    -print0 | \
-  xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "$0"'
+    -print0 |
+    xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "$0"'
 }
 
 commands_find() {
   # Find commands that contain regular expression.
   # It is also useful to find which commands are autocompleted, if you search
   # for commands that start with a certain text.
-  # 
+  #
   # Usage:
   #   commands_find        # all commands
   #   commands_find foo    # commands that contain "foo"
   #   commands_find '^bar' # commands that start with "bar"
   #   commands_find 'baz$' # commands that end with "baz"
-  # 
+  #
   # References:
   # - https://unix.stackexchange.com/a/127508
   # - https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
@@ -136,7 +133,7 @@ commands_find() {
 
 yaml2json() {
   python3 -c '''import sys, yaml, json
-json.dump(yaml.load(sys.stdin, Loader=yaml.FullLoader), sys.stdout, indent=2)''' < "$1"
+json.dump(yaml.load(sys.stdin, Loader=yaml.FullLoader), sys.stdout, indent=2)''' <"$1"
   # ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))' "$1"
 }
 
@@ -157,9 +154,9 @@ repos_with_stash_entries() {
 
   find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
     while read -d $'\0' repo; do
-      pushd "${repo%.git}" 1> /dev/null
+      pushd "${repo%.git}" 1>/dev/null
       [[ $(git stash list) ]] && echo "${repo%.git}"
-      popd 1> /dev/null
+      popd 1>/dev/null
     done
 }
 
@@ -175,9 +172,9 @@ repos_with_local_branches() {
 
   find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
     while read -d $'\0' repo; do
-      pushd "${repo%.git}" 1> /dev/null
+      pushd "${repo%.git}" 1>/dev/null
       [[ $(git branch | wc -l | tr -d ' ') > 1 ]] && echo "${repo%.git}"
-      popd 1> /dev/null
+      popd 1>/dev/null
     done
 }
 
@@ -193,8 +190,8 @@ repos_with_changes() {
 
   find "${1:-.}" -path '*/.git' -depth 2 -type d -print0 |
     while read -d $'\0' repo; do
-      pushd "${repo%.git}" 1> /dev/null
+      pushd "${repo%.git}" 1>/dev/null
       [[ $(git diff --name-only origin/master...) || $(git status -s) ]] && echo "${repo%.git}"
-      popd 1> /dev/null
+      popd 1>/dev/null
     done
 }

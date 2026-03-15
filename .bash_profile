@@ -22,24 +22,21 @@ is_valid_command() {
   # Examples:
   #   is_valid_command foo && echo "'foo' exists"
   #   is_valid_command ls && echo "'ls' exists"
-  command -v "${1}" > /dev/null
+  command -v "${1}" >/dev/null
 }
-
 
 # Initialize
 # ==========
 source_if_exists "${HOME}/.bashrc"
-[[ "${BASH_VERSINFO[0]}" -ge 4 ]] && shopt -s autocd  # change directory without `cd`
+[[ "${BASH_VERSINFO[0]}" -ge 4 ]] && shopt -s autocd # change directory without `cd`
 if is_valid_command brew && [[ -z "${HOMEBREW_PREFIX:-}" ]]; then
   HOMEBREW_PREFIX="$(brew --prefix)"
 fi
-
 
 # To handle non-ASCII characters
 # ==============================
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-
 
 # Aliases
 # =======
@@ -62,7 +59,6 @@ alias gs="git status"
 alias desktop="cd ${HOME}/Desktop/"
 alias downloads="cd ${HOME}/Downloads/"
 alias treeclean="tree -a -I '.idea|target|.git'"
-
 
 # Git
 # ===
@@ -88,7 +84,6 @@ if [[ -f "${GIT_COMPLETION_FILE}" ]]; then
   __git_complete gs _git_status
 fi
 
-
 # Appearance
 # ==========
 export HISTTIMEFORMAT="%Y-%m-%d %T "
@@ -100,18 +95,17 @@ export CLICOLOR=1
 export PS1="\n[\D{%T}] \[\033[1;34m\]\u \[\033[1;32m\]\w\[\033[0m\]"
 
 # Git
-export GIT_PS1_SHOWDIRTYSTATE=true # unstaged ('*') and staged ('+') changes next to the branch name
-export GIT_PS1_SHOWSTASHSTATE=true # '$' next to the branch name if something is stashed
-export GIT_PS1_SHOWUNTRACKEDFILES=true # '%' next to the branch name if there are untracked files
+export GIT_PS1_SHOWDIRTYSTATE=true         # unstaged ('*') and staged ('+') changes next to the branch name
+export GIT_PS1_SHOWSTASHSTATE=true         # '$' next to the branch name if something is stashed
+export GIT_PS1_SHOWUNTRACKEDFILES=true     # '%' next to the branch name if there are untracked files
 export GIT_PS1_SHOWUPSTREAM="auto verbose" # difference between HEAD and its upstream: '<' (you are behind), '>' (you are ahead), '<>' (you have diverged), '=' (no difference)
-export GIT_PS1_DESCRIBE_STYLE="branch" # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
-export GIT_PS1_SHOWCOLORHINTS=true # colored hint about the current dirty state; allow when using PROMPT_COMMAND
+export GIT_PS1_DESCRIBE_STYLE="branch"     # more information (relative to newer tag or branch) about the identity of commits checked out as a detached HEAD
+export GIT_PS1_SHOWCOLORHINTS=true         # colored hint about the current dirty state; allow when using PROMPT_COMMAND
 if [[ -f "${GIT_PROMPT_FILE}" ]]; then
   export PS1="${PS1}\[\033[0;31m\]\$(__git_ps1 \" (%s)\")\[\033[0m\]"
 fi
 
 export PS1="${PS1}\[\033[0m\] \$ "
-
 
 # Programs
 # ========
@@ -130,7 +124,7 @@ fi
 # ----
 if is_valid_command jenv; then
   export PATH="${HOME}/.jenv/bin:${PATH}"
-  eval "$(jenv init -)";
+  eval "$(jenv init -)"
 fi
 
 # node
@@ -140,18 +134,16 @@ if is_valid_command node && [[ -n "$HOMEBREW_PREFIX" ]]; then
   export NODE_PATH="${HOMEBREW_PREFIX}/lib/node_modules"
 fi
 
-
 # Autocomplete
 # ============
 
- [[ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]] && . "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
+[[ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]] && . "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
 
 # Utilities
 # =========
-CUSTOM_PATH="$(dirname ${BASH_SOURCE[0]})/.custom"
+CUSTOM_PATH="$(dirname -- "${BASH_SOURCE[0]}")/custom-scripts"
 source_if_exists "${CUSTOM_PATH}/utils"
 export PATH="${CUSTOM_PATH}:${PATH}"
-
 
 # Tokens
 # ======

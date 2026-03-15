@@ -2,10 +2,11 @@
 
 - [Setup steps](#setup-steps)
   - [macOS setup](#macos-setup)
+  - [iTerm configuration](#iterm-configuration)
   - [In file `~/.zshrc`](#in-file-zshrc)
   - [Powerlevel10k configuration](#powerlevel10k-configuration)
-  - [Git config](#git-config)
-  - [GitHub config](#github-config)
+  - [Git configuration](#git-configuration)
+  - [GitHub configuration](#github-configuration)
   - [Sublime Text](#sublime-text)
     - [Install additional dictionaries](#install-additional-dictionaries)
   - [Visual Studio Code](#visual-studio-code)
@@ -15,7 +16,19 @@
 
 ## macOS setup
 
-Run `macos.sh`
+1. Run `macos.sh`
+2. Open the following apps, and configure them to open at login:
+    - [MeetingBar](https://meetingbar.app/)
+    - [Rectangle](https://rectangleapp.com/)
+    - [Stats](https://github.com/exelban/stats)
+
+## iTerm configuration
+
+1. Enable word jumping when pressing `⌥` + left/right arrow:
+    1. `Settings` > `Profiles` > `Keys` > `Key Bindings` > `+`:
+        - `Keyboard Shortcut`: `⌥` + left arrow
+        - `Action`: `Send Keystrokes` > `Send Escape Sequence` > `Esc+ b`
+        - Repeat for `⌥` + right arrow, with `Esc+ f`
 
 ## In file `~/.zshrc`
 
@@ -57,7 +70,7 @@ Run `macos.sh`
      fi
      ```
 
-6. Add these lines to the top of the file, where file `update_all.sh` is [this](../.custom/update_all.sh):
+6. Add these lines to the top of the file, where file [`update_all.sh`](../custom-scripts/update_all.sh) is:
 
      ```shell
      if [ -f "$HOME"/Documents/update_all.sh ]; then
@@ -116,11 +129,12 @@ Run `macos.sh`
 
 ## Powerlevel10k configuration
 
-Open a new terminal (or run `p10k configure`). In iTerm2 or Termux, `p10k configure` can install the recommended font
-for you. Simply answer "Yes" when asked whether to install `Meslo Nerd Font`.
+Open a new terminal (or run `p10k configure`).
 
 Suggested answers:
 
+- In iTerm2 or Termux, `p10k configure` can install the recommended font; simply answer "Yes" when
+  asked whether to install `Meslo Nerd Font`
 - `Prompt Style`: Lean
 - `Character Set`: Unicode
 - `Prompt Colors`: 256 colors
@@ -135,10 +149,10 @@ Suggested answers:
 - `Enable Transient Prompt?`: No
 - `Instant Prompt Mode`: Verbose (recommended)
 
-## Git config
+## Git configuration
 
 ```shell
-git config --global user.email "yourusernam@yourdomain.com"
+git config --global user.email "your_username@yourdomain.com"
 git config --global user.name "Your Name"
 git config --global fetch.prune true
 git config --global pull.rebase false
@@ -150,49 +164,53 @@ git config --global --add includeIf.gitdir:~/repos/open-source/.path ~/.gitconfi
 
 cat > ~/.gitconfig-open-source <<EOF
 [user]
-	email = yourusernam@yourdomain.com
-	name = Your Name
-	signingkey = ~/.ssh/id_ed25519.pub
+ email = your_username@yourdomain.com
+ name = Your Name
+ signingkey = ~/.ssh/id_ed25519.pub
 EOF
 ```
 
-## GitHub config
+## GitHub configuration
 
 References:
 
 - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>
 - <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account#adding-a-new-ssh-key-to-your-account>
 
-```shell
-ssh-keygen -t ed25519 -C "yourusernam@yourdomain.com"
-# When asked to enter a passphrase, only type enter, i.e., leave it empty.
-eval "$(ssh-agent -s)"
+1. Run in the terminal:
 
-echo "Host github.com
-  IgnoreUnknown UseKeychain
-  AddKeysToAgent yes
-  UseKeychain yes
-  IdentityFile ~/.ssh/id_ed25519
-" >> ~/.ssh/config
+    ```shell
+    ssh-keygen -t ed25519 -C "your_username@yourdomain.com"
+    # When asked to enter a passphrase, only type enter, i.e., leave it empty.
+    eval "$(ssh-agent -s)"
 
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    echo "Host github.com
+    IgnoreUnknown UseKeychain
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+    " >> ~/.ssh/config
 
-pbcopy < ~/.ssh/id_ed25519.pub
-```
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 
-1. Go to <https://github.com/settings/ssh/new> and choose:
+    pbcopy < ~/.ssh/id_ed25519.pub
+    ```
+
+2. Go to <https://github.com/settings/ssh/new> and choose:
     - `Title`: choose something to identify your computer
     - `Key type`: `Authentication Key`
-    - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub` to your clipboard)
-2. Repeat the process, but now with `Key type` = `Signing Key`
+    - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub`
+      to your clipboard)
+3. Repeat the process, but now with `Key type` = `Signing Key`
+4. Run in the terminal:
 
-```shell
-git config --global gpg.format ssh
-git config --global commit.gpgsign true
-git config --global user.signingkey ~/.ssh/id_ed25519.pub
-echo "$(git config --global user.email) $(cat ~/.ssh/id_ed25519.pub)" > ~/.ssh/allowed_signers
-git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
-```
+    ```shell
+    git config --global gpg.format ssh
+    git config --global commit.gpgsign true
+    git config --global user.signingkey ~/.ssh/id_ed25519.pub
+    echo "$(git config --global user.email) $(cat ~/.ssh/id_ed25519.pub)" > ~/.ssh/allowed_signers
+    git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+    ```
 
 ## Sublime Text
 
@@ -200,9 +218,9 @@ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 
 Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-file#installation>:
 
-1. In the terminal: `mkdir -p "$HOME/Library/Application Support/Sublime Text/Packages/Dictionaries"`
-2. Choose the dictionaries from <https://github.com/titoBouzout/Dictionaries> and download the 3 files related to the
-   desired language (extensions AFF, DIC, TXT).
+1. In the terminal, run: `mkdir -p "$HOME/Library/Application Support/Sublime Text/Packages/Dictionaries"`
+2. Choose the dictionaries from <https://github.com/titoBouzout/Dictionaries> and download the 3
+   files related to the desired language (extensions AFF, DIC, TXT).
 3. Move these 3 files into the folder above (there can't be any subfolder)
 4. Enable spell checking: in Sublime --> menu `View` --> `Spell Check` (shortcut: F6)
 5. Choose a dictionary: in Sublime --> menu `View` --> `Dictionary` --> `Dictionaries`
@@ -217,17 +235,14 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
       code --install-extension "$extension"
     done <<'EOF'
     aaron-bond.better-comments
-    amazonwebservices.aws-toolkit-vscode
     charliermarsh.ruff
     davidanson.vscode-markdownlint
     eamodio.gitlens
     exiasr.hadolint
     foxundermoon.shell-format
-    github.copilot
     github.copilot-chat
     gruntfuggly.todo-tree
     hashicorp.terraform
-    johnpapa.vscode-peacock
     mkhl.shfmt
     ms-azuretools.vscode-docker
     ms-python.debugpy
@@ -239,10 +254,7 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
     ms-toolsai.jupyter-renderers
     ms-toolsai.vscode-jupyter-cell-tags
     ms-toolsai.vscode-jupyter-slideshow
-    ms-vscode-remote.remote-ssh
-    ms-vscode-remote.remote-ssh-edit
     ms-vscode.makefile-tools
-    ms-vscode.remote-explorer
     njpwerner.autodocstring
     oderwat.indent-rainbow
     redhat.vscode-yaml
@@ -252,6 +264,12 @@ Instructions from <https://github.com/titoBouzout/Dictionaries?tab=readme-ov-fil
     yzhang.markdown-all-in-one
     EOF
     ```
+
+    The following extensions are necessary to [set up local Visual Studio Code with AWS SageMaker](https://docs.aws.amazon.com/sagemaker/latest/dg/remote-access-local-ide-setup.html):
+    - `amazonwebservices.aws-toolkit-vscode`
+    - `ms-vscode-remote.remote-ssh`
+    - `ms-vscode-remote.remote-ssh-edit`
+    - `ms-vscode.remote-explorer`
 
 2. Run Cmd+Shift+P and type `Preferences: Open User Settings (JSON)`:
 
@@ -410,9 +428,31 @@ Run `java_setup.sh`
 
 ## Python setup
 
-Run `python_setup.sh`
+1. Run: `conda init zsh`
+2. Open a new terminal, and run:
+
+    ```shell
+    conda update -yn base conda
+    conda update -yn base --all
+    conda config --add create_default_packages ipykernel
+    conda install -yn base \
+      boto3 \
+      jupyterlab \
+      jupyterlab_execute_time \
+      matplotlib \
+      nb_conda_kernels \
+      pandas \
+      pipdeptree \
+      pytest \
+      pytest-xdist \
+      seaborn \
+      tabulate \
+      toolz
+    ```
 
 ### Customize Jupyter notebooks
+
+This is not necessary for JupyterLab notebooks.
 
 References:
 
@@ -438,8 +478,8 @@ doesn't work anymore:
 }
 ```
 
-Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter notebook is; the
-`!important` rule may not be necessary):
+Possible solutions that work (it's only necessary to refresh the browser page where the Jupyter
+notebook is; the `!important` rule may not be necessary):
 
 ```css
 .jp-Notebook {
