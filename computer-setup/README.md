@@ -200,7 +200,7 @@ References:
     - `Title`: choose something to identify your computer
     - `Key type`: `Authentication Key`
     - `Key`: paste your public key (the command `pbcopy` above copies the content of `id_ed25519.pub`
-    to your clipboard)
+      to your clipboard)
 3. Repeat the process, but now with `Key type` = `Signing Key`
 4. Run in the terminal:
 
