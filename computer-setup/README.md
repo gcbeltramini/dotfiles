@@ -87,7 +87,7 @@
     REPOS_HOME="$HOME/Documents/repos/"
 
     repo() {
-      # \`cd\` into repository folder.
+      # `cd` into repository folder.
       #
       # Usage:
       #   repo [<repo_name>]
