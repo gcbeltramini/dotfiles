@@ -35,97 +35,97 @@
 1. Set `ZSH_THEME="powerlevel10k/powerlevel10k"`
 2. Add the plugins to the list of plugins for Oh My Zsh to load:
 
-     ```shell
-     plugins=(
-       autoupdate
-       aws
-       colored-man-pages
-       conda-zsh-completion
-       F-Sy-H # fast-syntax-highlighting
-       fzf
-       git
-       kubectl
-       terraform
-       web-search
-       zsh-autosuggestions
-       zsh-syntax-highlighting
-     )
-     ```
+    ```shell
+    plugins=(
+      autoupdate
+      aws
+      colored-man-pages
+      conda-zsh-completion
+      F-Sy-H # fast-syntax-highlighting
+      fzf
+      git
+      kubectl
+      terraform
+      web-search
+      zsh-autosuggestions
+      zsh-syntax-highlighting
+    )
+    ```
 
 3. Add the following line before `source "$ZSH/oh-my-zsh.sh"`:
 
-     ```shell
-     fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-     ```
+    ```shell
+    fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+    ```
 
 4. Add this to the section `User configuration`: `export LESS="FRX"`
 5. Modify the default text editor:
 
-     ```shell
-     # Preferred editor for local and remote sessions
-     if [[ -n $SSH_CONNECTION ]]; then
-       export EDITOR='vim'
-     else
-       export EDITOR='subl --new-window --wait'
-     fi
-     ```
+    ```shell
+    # Preferred editor for local and remote sessions
+    if [[ -n $SSH_CONNECTION ]]; then
+      export EDITOR='vim'
+    else
+      export EDITOR='subl --new-window --wait'
+    fi
+    ```
 
 6. Add these lines to the top of the file, where file [`update_all.sh`](../custom-scripts/update_all.sh) is:
 
-     ```shell
-     if [ -f "$HOME"/Documents/update_all.sh ]; then
-       bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
-     fi
-     ```
+    ```shell
+    if [ -f "$HOME"/Documents/update_all.sh ]; then
+      bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
+    fi
+    ```
 
 7. Add this section to the end of `~/.zshrc`:
 
-     ```shell
-     # >>> CUSTOM >>>
-     alias zrc='subl "$HOME/.zshrc"'
+    ```shell
+    # >>> CUSTOM >>>
+    alias zrc='subl "$HOME/.zshrc"'
 
-     REPOS_HOME="$HOME/Documents/repos/"
+    REPOS_HOME="$HOME/Documents/repos/"
 
-     repo() {
-       # \`cd\` into repository folder.
-       #
-       # Usage:
-       #   repo [<repo_name>]
-       #
-       # Examples:
-       #   repo
-       #   repo my-project
-       local -r repo=${1:-}
-       cd "${REPOS_HOME}/$repo"
-     }
+    repo() {
+      # `cd` into repository folder.
+      #
+      # Usage:
+      #   repo [<repo_name>]
+      #
+      # Examples:
+      #   repo
+      #   repo my-project
+      local -r repo=${1:-}
+      cd "${REPOS_HOME}/$repo"
+    }
 
-     _repo_complete() {
-       _path_files -W "$REPOS_HOME" -/  # `-/` ensures only directories are listed
-     }
+    _repo_complete() {
+      _path_files -W "$REPOS_HOME" -/  # `-/` ensures only directories are listed
+    }
 
-     # Register the completion
-     compdef _repo_complete repo
+    # Register the completion
+    compdef _repo_complete repo
 
-     # Customize zstyle:
-     # (from https://www.masterzen.fr/2009/04/19/in-love-with-zsh-part-one/#formatting-completion)
-     # (this affects the autocompletion of all commands in the terminal)
-     # format all messages not formatted in bold prefixed with ----
-     zstyle ':completion:*' format '%B---- %d%b'
-     # format descriptions (notice the vt100 escapes)
-     zstyle ':completion:*:*:*:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
-     # bold and underline normal messages
-     zstyle ':completion:*:*:*:*:messages' format '%B%U---- %d%u%b'
-     # format in bold red error messages
-     zstyle ':completion:*:*:*:*:warnings' format "%B$fg[red]%}---- no match for: $fg[white]%d%b"
-     # use the tag name as group name
-     zstyle ':completion:*' group-name ''
-     # activate menu selection
-     zstyle ':completion:*' menu select
-     # avoid hiding descriptions, enable verbose descriptions
-     zstyle ':completion:*' verbose yes
+    # Customize zstyle:
+    # (from https://www.masterzen.fr/2009/04/19/in-love-with-zsh-part-one/#formatting-completion)
+    # (this affects the autocompletion of all commands in the terminal)
+    # format all messages not formatted in bold prefixed with ----
+    zstyle ':completion:*' format '%B%F{blue}----%f %d%b'
+    # format descriptions (notice the vt100 escapes)
+    zstyle ':completion:*:*:*:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
+    # bold and underline normal messages
+    zstyle ':completion:*:*:*:*:messages' format '%B%U---- %d%u%b'
+    # format in bold red error messages
+    zstyle ':completion:*:*:*:*:warnings' format '%B%F{red}---- no match for: %F{white}%d%f%b'
+    # use the tag name as group name
+    zstyle ':completion:*' group-name ''
+    # activate menu selection
+    zstyle ':completion:*' menu select
+    # avoid hiding descriptions, enable verbose descriptions
+    zstyle ':completion:*' verbose yes
 
-     # <<< CUSTOM >>>
-     ```
+    # <<< CUSTOM >>>
+    ```
 
 ## Powerlevel10k configuration
 
