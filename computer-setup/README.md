@@ -116,7 +116,7 @@
     # bold and underline normal messages
     zstyle ':completion:*:*:*:*:messages' format '%B%U---- %d%u%b'
     # format in bold red error messages
-    zstyle ':completion:*:*:*:*:warnings' format "%B%{$fg[red]%}---- no match for: %{$fg[white]%}%d%f%b"
+    zstyle ':completion:*:*:*:*:warnings' format "%B%F{red}---- no match for: %F{white}%d%f%b"
     # use the tag name as group name
     zstyle ':completion:*' group-name ''
     # activate menu selection
