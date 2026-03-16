@@ -35,48 +35,48 @@
 1. Set `ZSH_THEME="powerlevel10k/powerlevel10k"`
 2. Add the plugins to the list of plugins for Oh My Zsh to load:
 
-     ```shell
-     plugins=(
-       autoupdate
-       aws
-       colored-man-pages
-       conda-zsh-completion
-       F-Sy-H # fast-syntax-highlighting
-       fzf
-       git
-       kubectl
-       terraform
-       web-search
-       zsh-autosuggestions
-       zsh-syntax-highlighting
-     )
-     ```
+    ```shell
+    plugins=(
+      autoupdate
+      aws
+      colored-man-pages
+      conda-zsh-completion
+      F-Sy-H # fast-syntax-highlighting
+      fzf
+      git
+      kubectl
+      terraform
+      web-search
+      zsh-autosuggestions
+      zsh-syntax-highlighting
+    )
+    ```
 
 3. Add the following line before `source "$ZSH/oh-my-zsh.sh"`:
 
-     ```shell
-     fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-     ```
+    ```shell
+    fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+    ```
 
 4. Add this to the section `User configuration`: `export LESS="FRX"`
 5. Modify the default text editor:
 
-     ```shell
-     # Preferred editor for local and remote sessions
-     if [[ -n $SSH_CONNECTION ]]; then
-       export EDITOR='vim'
-     else
-       export EDITOR='subl --new-window --wait'
-     fi
-     ```
+    ```shell
+    # Preferred editor for local and remote sessions
+    if [[ -n $SSH_CONNECTION ]]; then
+      export EDITOR='vim'
+    else
+      export EDITOR='subl --new-window --wait'
+    fi
+    ```
 
 6. Add these lines to the top of the file, where file [`update_all.sh`](../custom-scripts/update_all.sh) is:
 
-     ```shell
-     if [ -f "$HOME"/Documents/update_all.sh ]; then
-       bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
-     fi
-     ```
+    ```shell
+    if [ -f "$HOME"/Documents/update_all.sh ]; then
+      bash "$HOME"/Documents/update_all.sh # this script runs 1x/week
+    fi
+    ```
 
 7. Add this section to the end of `~/.zshrc`:
 
