@@ -69,7 +69,8 @@ brew install \
   tree \
   uv \
   watch \
-  wget
+  wget \
+  yq
 
 # ------------------------------------------------------------
 # oh-my-zsh (https://github.com/ohmyzsh/ohmyzsh)
