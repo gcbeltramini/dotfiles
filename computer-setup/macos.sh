@@ -43,6 +43,15 @@ brew install --cask \
   vlc \
   zulu@21
 
+# 'lima' (used internally by Rancher Desktop) creates a Unix socket like
+# '/Users/.../Library/Application Support/rancher-desktop/lima/0/ssh.sock.1234567890123456'
+# That path is too long, and macOS enforces a hard limit (~104 chars) for Unix socket paths. So the
+# VM fails to start.
+mkdir -p ~/rd
+rancher_desktop_dir="$HOME/Library/Application Support/rancher-desktop"
+[ -d "$rancher_desktop_dir" ] && mv "$rancher_desktop_dir" ~/rd/
+ln -s ~/rd/rancher-desktop "$rancher_desktop_dir"
+
 # ------------------------------------------------------------
 # Utilities
 # ------------------------------------------------------------
