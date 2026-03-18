@@ -70,8 +70,6 @@ brew install \
   htop \
   jenv \
   jq \
-  kubectx \
-  kubernetes-cli \
   ruff \
   shellcheck \
   shfmt \
@@ -81,6 +79,13 @@ brew install \
   watch \
   wget \
   yq
+
+# Commands that come with Rancher Desktop:
+# - docker
+# - docker-compose
+# - kubernetes-cli
+#
+# And kubectx (requires kubernetes-cli)
 
 # ------------------------------------------------------------
 # oh-my-zsh (https://github.com/ohmyzsh/ohmyzsh)
