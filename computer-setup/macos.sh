@@ -64,6 +64,7 @@ brew install \
   findutils \
   fzf \
   gawk \
+  go \
   grep \
   gsed \
   htop \
