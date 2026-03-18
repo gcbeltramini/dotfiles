@@ -70,6 +70,7 @@ brew install \
   htop \
   jenv \
   jq \
+  postgresql \
   ruff \
   shellcheck \
   shfmt \
