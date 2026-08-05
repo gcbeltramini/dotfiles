@@ -64,13 +64,12 @@ brew install \
   findutils \
   fzf \
   gawk \
-  go \
   grep \
   gsed \
   htop \
+  httpie \
   jenv \
   jq \
-  postgresql \
   ruff \
   shellcheck \
   shfmt \
@@ -84,9 +83,10 @@ brew install \
 # Commands that come with Rancher Desktop:
 # - docker
 # - docker-compose
-# - kubernetes-cli
+# - helm
+# - kubernetes-cli / kubectl
 #
-# And kubectx (requires kubernetes-cli)
+# Another useful command: kubectx (requires 'kubernetes-cli'; installs 'kubectx' and 'kubens')
 
 # ------------------------------------------------------------
 # oh-my-zsh (https://github.com/ohmyzsh/ohmyzsh)
