@@ -47,10 +47,17 @@ brew install --cask \
 # '/Users/.../Library/Application Support/rancher-desktop/lima/0/ssh.sock.1234567890123456'
 # That path is too long, and macOS enforces a hard limit (~104 chars) for Unix socket paths. So the
 # VM fails to start.
-mkdir -p ~/rd
 rancher_desktop_dir="$HOME/Library/Application Support/rancher-desktop"
-[ -d "$rancher_desktop_dir" ] && mv "$rancher_desktop_dir" ~/rd/
-ln -s ~/rd/rancher-desktop "$rancher_desktop_dir"
+rancher_desktop_target="$HOME/rd/rancher-desktop"
+mkdir -p "$HOME/rd"
+if [ ! -L "$rancher_desktop_dir" ]; then
+  if [ -d "$rancher_desktop_dir" ]; then
+    mv "$rancher_desktop_dir" "$rancher_desktop_target"
+  else
+    mkdir -p "$rancher_desktop_target"
+  fi
+  ln -s "$rancher_desktop_target" "$rancher_desktop_dir"
+fi
 
 # ------------------------------------------------------------
 # Utilities
