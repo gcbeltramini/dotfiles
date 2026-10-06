@@ -43,6 +43,22 @@ brew install --cask \
   vlc \
   zulu@21
 
+# 'lima' (used internally by Rancher Desktop) creates a Unix socket like
+# '/Users/.../Library/Application Support/rancher-desktop/lima/0/ssh.sock.1234567890123456'
+# That path is too long, and macOS enforces a hard limit (~104 chars) for Unix socket paths. So the
+# VM fails to start.
+rancher_desktop_dir="$HOME/Library/Application Support/rancher-desktop"
+rancher_desktop_target="$HOME/rd/rancher-desktop"
+mkdir -p "$HOME/rd"
+if [ ! -L "$rancher_desktop_dir" ]; then
+  if [ -d "$rancher_desktop_dir" ]; then
+    mv "$rancher_desktop_dir" "$rancher_desktop_target"
+  else
+    mkdir -p "$rancher_desktop_target"
+  fi
+  ln -s "$rancher_desktop_target" "$rancher_desktop_dir"
+fi
+
 # ------------------------------------------------------------
 # Utilities
 # ------------------------------------------------------------
@@ -58,10 +74,9 @@ brew install \
   grep \
   gsed \
   htop \
+  httpie \
   jenv \
   jq \
-  kubectx \
-  kubernetes-cli \
   ruff \
   shellcheck \
   shfmt \
@@ -71,6 +86,14 @@ brew install \
   watch \
   wget \
   yq
+
+# Commands that come with Rancher Desktop:
+# - docker
+# - docker-compose
+# - helm
+# - kubernetes-cli / kubectl
+#
+# Another useful command: kubectx (requires 'kubernetes-cli'; installs 'kubectx' and 'kubens')
 
 # ------------------------------------------------------------
 # oh-my-zsh (https://github.com/ohmyzsh/ohmyzsh)
